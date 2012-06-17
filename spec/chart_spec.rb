@@ -48,4 +48,12 @@ describe Chart do
     image.must_have_svg_doctype
     image.must_have_valid_root chart
   end
+
+  it 'will accept data' do
+    chart = Chart.new(DEFAULT_WIDTH, DEFAULT_HEIGHT) do
+      set_data [1, 2, 3]
+    end
+
+    chart.data.must_equal [1, 2, 3]
+  end
 end

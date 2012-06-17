@@ -10,6 +10,9 @@ require 'builder'
 module Garnet
   # Accepts the data and generates the chart output.
   class Chart
+    # Data to be displayed in the chart.
+    attr_reader :data
+
     # Height of the generated image.
     attr_reader :height
 
@@ -20,13 +23,18 @@ module Garnet
     # 
     # @param width Width of the image to generate.
     # @param height Height of the image to generate.
+    # @param block Instructions on how to build the chart.
     # @raise [ArgumentError] When width or height are negative.
-    def initialize(width, height)
+    def initialize(width, height, &block)
       raise ArgumentError, "Width cannot be negative" if width < 0
       raise ArgumentError, "Height cannot be negative" if height < 0
 
       @width = width
       @height = height
+
+      unless block.nil?
+        instance_exec(&block)
+      end
     end
 
     # Renders the chart as an SVG image.
@@ -47,5 +55,10 @@ module Garnet
 
       b.target!
     end
+
+    def set_data(data)
+      @data = data
+    end
+    private :set_data
   end
 end
