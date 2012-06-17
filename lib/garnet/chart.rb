@@ -6,12 +6,15 @@
 
 require 'builder'
 
-# Provide a library for easily transforming data sets into [SVG](http://www.w3.org/TR/SVG/) chart images.
+# Provide a library for easily transforming data sets into SVG chart images.
 module Garnet
   # Accepts the data and generates the chart output.
   class Chart
     # Data to be displayed in the chart.
     attr_reader :data
+
+    # Rectangle within the image to display the actual chart.  Expressed as an array of four numbers: min-x, min-y, width, height.
+    attr_reader :display_rect
 
     # Height of the generated image.
     attr_reader :height
@@ -31,6 +34,8 @@ module Garnet
 
       @width = width
       @height = height
+
+      @display_rect = [0, 0, @width, @height]
 
       unless block.nil?
         instance_exec(&block)
@@ -56,6 +61,7 @@ module Garnet
       b.target!
     end
 
+    # Sets the data to use to render the chart.
     def set_data(data)
       @data = data
     end
