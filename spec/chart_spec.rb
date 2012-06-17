@@ -87,7 +87,7 @@ describe Chart do
 
   it 'will call the chart type render method when render is called' do
     mock = MiniTest::Mock.new
-    mock.expect(:render, nil, [Builder::XmlMarkup])
+    mock.expect(:render, nil, [Builder::XmlMarkup, Array])
     mock.expect(:nil?, false)
 
     chart = Chart.new(DEFAULT_WIDTH, DEFAULT_HEIGHT) do
