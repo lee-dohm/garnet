@@ -19,4 +19,4 @@ Provide a library for easily transforming data sets into [SVG](http://www.w3.org
 
 - **Author** - Lee Dohm
 - **Email** - lee@liftedstudios.com
-- **License** - MIT License (http://www.opensource.org/licenses/mit-license.html)
+- **License** - BSD Revised License (http://www.opensource.org/licenses/BSD-3-Clause)
