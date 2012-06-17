@@ -8,6 +8,7 @@ gem 'minitest'
 
 require 'minitest/spec'
 require 'minitest/autorun'
+require 'minitest/mock'
 
 require 'garnet'
 require 'helpers'
@@ -61,5 +62,25 @@ describe Chart do
     chart = Chart.new(DEFAULT_WIDTH, DEFAULT_HEIGHT)
 
     chart.display_rect.must_equal [0, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT]
+  end
+
+  it 'can have a chart type assigned to it' do
+    mock = MiniTest::Mock.new
+    mock.expect(:render, nil)
+    mock.expect(:must_equal, mock, [mock])
+
+    chart = Chart.new(DEFAULT_WIDTH, DEFAULT_HEIGHT) do
+      set_type mock
+    end
+
+    chart.type.must_equal mock
+  end
+
+  it 'will raise an error if the type that is set does not respond to #render' do
+    proc {
+      Chart.new(DEFAULT_WIDTH, DEFAULT_HEIGHT) do
+        set_type Numeric
+      end
+    }.must_raise InvalidChartTypeError
   end
 end

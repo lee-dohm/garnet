@@ -8,6 +8,10 @@ require 'builder'
 
 # Provide a library for easily transforming data sets into SVG chart images.
 module Garnet
+  # Raised when the type of chart assigned is not a valid chart type.
+  class InvalidChartTypeError < StandardError
+  end
+
   # Accepts the data and generates the chart output.
   class Chart
     # Data to be displayed in the chart.
@@ -18,6 +22,9 @@ module Garnet
 
     # Height of the generated image.
     attr_reader :height
+
+    # Type of the chart to render.
+    attr_reader :type
 
     # Width of the generated image.
     attr_reader :width
@@ -66,5 +73,13 @@ module Garnet
       @data = data
     end
     private :set_data
+
+    # Sets the type of chart to render.
+    def set_type(type)
+      raise InvalidChartTypeError, "#{type.to_s} is not a valid chart type." unless type.respond_to?(:render)
+
+      @type = type
+    end
+    private :set_type
   end
 end
