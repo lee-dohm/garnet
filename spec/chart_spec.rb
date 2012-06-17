@@ -10,8 +10,11 @@ require 'minitest/spec'
 require 'minitest/autorun'
 
 require 'garnet'
+require 'helpers'
+require 'pp'
 
 include Garnet
+include Test::Helpers
 
 describe Chart do
   DEFAULT_WIDTH = 1200
@@ -34,5 +37,15 @@ describe Chart do
     proc {
       Chart.new(DEFAULT_WIDTH, -1)
     }.must_raise ArgumentError
+  end
+
+  it 'can be asked to render itself' do
+    chart = Chart.new(DEFAULT_WIDTH, DEFAULT_HEIGHT)
+
+    image = chart.render
+
+    image.must_have_xml_declaration
+    image.must_have_svg_doctype
+    image.must_have_valid_root chart
   end
 end

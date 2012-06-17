@@ -4,6 +4,9 @@
 # Copyright:: Copyright 2012 by Lifted Studios. All Rights Reserved.
 # 
 
+require 'builder'
+
+# Provide a library for easily transforming data sets into [SVG](http://www.w3.org/TR/SVG/) chart images.
 module Garnet
   # Accepts the data and generates the chart output.
   class Chart
@@ -24,6 +27,25 @@ module Garnet
 
       @width = width
       @height = height
+    end
+
+    # Renders the chart as an SVG image.
+    #
+    # @return [String] SVG text describing the chart.
+    def render
+      b = Builder::XmlMarkup.new(:indent => 2)
+      
+      b.instruct! :xml, :version => "1.0", :standalone => "no"
+      b.declare! :DOCTYPE, :svg, :PUBLIC, "-//W3C//DTD SVG 1.1//EN", "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"
+
+      options = {}
+      options[:version] = '1.1'
+      options[:xmlns] = 'http://www.w3.org/2000/svg' 
+      options[:width] = @width
+      options[:height] = @height
+      b.svg(options)
+
+      b.target!
     end
   end
 end
