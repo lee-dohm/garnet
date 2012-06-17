@@ -10,6 +10,7 @@ require 'minitest/spec'
 require 'minitest/autorun'
 require 'minitest/mock'
 
+require 'builder'
 require 'garnet'
 require 'helpers'
 require 'pp'
@@ -82,5 +83,19 @@ describe Chart do
         set_type Numeric
       end
     }.must_raise InvalidChartTypeError
+  end
+
+  it 'will call the chart type render method when render is called' do
+    mock = MiniTest::Mock.new
+    mock.expect(:render, nil, [Builder::XmlMarkup])
+    mock.expect(:nil?, false)
+
+    chart = Chart.new(DEFAULT_WIDTH, DEFAULT_HEIGHT) do
+      set_type mock
+    end
+
+    chart.render
+
+    mock.verify
   end
 end

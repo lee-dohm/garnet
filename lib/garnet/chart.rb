@@ -41,6 +41,7 @@ module Garnet
 
       @width = width
       @height = height
+      @type = nil
 
       @display_rect = [0, 0, @width, @height]
 
@@ -63,7 +64,9 @@ module Garnet
       options[:xmlns] = 'http://www.w3.org/2000/svg' 
       options[:width] = @width
       options[:height] = @height
-      b.svg(options)
+      b.svg(options) do |b|
+        @type.render(b) unless @type.nil?
+      end
 
       b.target!
     end
