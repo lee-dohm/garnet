@@ -18,6 +18,9 @@ module Garnet
     # @param width Width of the image to generate.
     # @param height Height of the image to generate.
     def initialize(width, height)
+      raise ArgumentError, "Width cannot be negative" if width < 0
+      raise ArgumentError, "Height cannot be negative" if height < 0
+      
       @width = width
       @height = height
     end

@@ -23,4 +23,16 @@ describe Chart do
     chart.width.must_equal DEFAULT_WIDTH
     chart.height.must_equal DEFAULT_HEIGHT
   end
+
+  it 'will raise an error on negative width' do
+    proc {
+      Chart.new(-1, DEFAULT_HEIGHT)
+    }.must_raise ArgumentError
+  end
+
+  it 'will raise an error on negative height' do
+    proc {
+      Chart.new(DEFAULT_WIDTH, -1)
+    }.must_raise ArgumentError
+  end
 end
