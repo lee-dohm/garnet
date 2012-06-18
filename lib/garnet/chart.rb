@@ -65,7 +65,7 @@ module Garnet
       options[:width] = @width
       options[:height] = @height
       b.svg(options) do |builder|
-        @type.render(builder, @display_rect) unless @type.nil?
+        @type.render(builder, self) unless @type.nil?
       end
 
       b.target!

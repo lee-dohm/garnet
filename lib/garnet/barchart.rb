@@ -7,5 +7,8 @@
 module Garnet
   # Defines the standard bar chart type.
   class BarChart
+    def self.render(builder, chart)
+      builder.g
+    end
   end
 end
