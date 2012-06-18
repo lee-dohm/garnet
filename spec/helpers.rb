@@ -4,7 +4,7 @@
 # Copyright:: Copyright 2012 by Lifted Studios. All Rights Reserved.
 # 
 
-require 'rexml/document'
+require 'nokogiri'
 
 module Test
   # Various helper methods for executing tests.
@@ -22,15 +22,14 @@ module Test
     infect_an_assertion :assert_svg_doctype, :must_have_svg_doctype, true
  
     def assert_valid_root(xml, chart)
-      doc = REXML::Document.new xml
+      doc = Nokogiri::XML(xml) { |config| config.strict }
 
       doc.root.name.must_equal 'svg'
 
-      doc.root.attributes.count.must_equal 4
-      doc.root.attributes['version'].must_equal '1.1'
-      doc.root.attributes['xmlns'].must_equal 'http://www.w3.org/2000/svg'
-      doc.root.attributes['width'].must_equal chart.width.to_s
-      doc.root.attributes['height'].must_equal chart.height.to_s
+      doc.root.attributes.count.must_equal 3
+      doc.root.attributes['version'].value.must_equal '1.1'
+      doc.root.attributes['width'].value.must_equal chart.width.to_s
+      doc.root.attributes['height'].value.must_equal chart.height.to_s
     end
     infect_an_assertion :assert_valid_root, :must_have_valid_root, true
   end
