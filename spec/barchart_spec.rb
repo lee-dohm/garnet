@@ -11,18 +11,34 @@ require 'minitest/autorun'
 require 'minitest/mock'
 
 require 'garnet'
-require 'rexml/document'
+require 'pp'
+require 'nokogiri'
 
 include Garnet
 
 describe BarChart do
   it 'will render the chart within a group' do
     mock = MiniTest::Mock.new
+    mock.expect(:data, [10, 20, 30])
+    mock.expect(:display_rect, [0, 0, 1200, 900])
 
     xml = BarChart.render(Builder::XmlMarkup.new(:indent => 2), mock)
-    doc = REXML::Document.new xml
+    doc = Nokogiri::XML(xml) { |config| config.strict }
 
     doc.root.name.must_equal "g"
-    mock.verify
-  end  
+  end
+
+  it 'will render each bar as four units wide' do
+    mock = MiniTest::Mock.new
+    mock.expect(:data, [10, 20, 30])
+    mock.expect(:display_rect, [0, 0, 1200, 900])
+
+    xml = BarChart.render(Builder::XmlMarkup.new(:indent => 2), mock)
+    doc = Nokogiri::XML(xml) { |config| config.strict }
+
+    doc.xpath("g/rect").count.must_equal 3
+    doc.xpath("g/rect").each do |e|
+      e.attribute("width").value.must_equal "4"
+    end
+  end
 end

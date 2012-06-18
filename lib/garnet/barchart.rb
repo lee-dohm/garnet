@@ -8,7 +8,11 @@ module Garnet
   # Defines the standard bar chart type.
   class BarChart
     def self.render(builder, chart)
-      builder.g
+      builder.g do |b|
+        chart.data.each do |datum|
+          b.rect(:width => 4)
+        end
+      end
     end
   end
 end
