@@ -21,6 +21,7 @@ describe BarChart do
   before do
     @mock = MiniTest::Mock.new
     @mock.expect(:data, [10, 20, 30])
+    @mock.expect(:data, [10, 20, 30])
     @mock.expect(:display_rect, [0, 0, 1200, 900])
   end
 
@@ -44,5 +45,23 @@ describe BarChart do
 
     xml.must_have_count_elements "g/rect", 3
     xml.must_have_attribute_on_element_equal "height", "g/rect", data
+  end
+
+  it 'will render each bar at an x-position of five times its index plus one' do
+    data = [1, 6, 11]
+
+    xml = BarChart.render(Builder::XmlMarkup.new(:indent => 2), @mock)
+
+    xml.must_have_count_elements "g/rect", 3
+    xml.must_have_attribute_on_element_equal "x", "g/rect", data
+  end
+
+  it 'will render each bar at a y-position of the max value minus its value' do
+    data = [20, 10, 0]
+
+    xml = BarChart.render(Builder::XmlMarkup.new(:indent => 2), @mock)
+
+    xml.must_have_count_elements "g/rect", 3
+    xml.must_have_attribute_on_element_equal "y", "g/rect", data
   end
 end

@@ -13,8 +13,9 @@ module Garnet
     # @param [Chart] chart Object describing the chart.
     def self.render(builder, chart)
       builder.g do |b|
-        chart.data.each do |datum|
-          b.rect(:width => 4, :height => datum.to_s)
+        max = chart.data.max
+        chart.data.each_with_index do |datum, index|
+          b.rect(:x => (index * 5 + 1), :y => (max - datum), :width => 4, :height => datum.to_s)
         end
       end
     end
