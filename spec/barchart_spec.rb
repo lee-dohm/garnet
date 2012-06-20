@@ -11,10 +11,11 @@ require 'minitest/autorun'
 require 'minitest/mock'
 
 require 'garnet'
-require 'pp'
+require 'helpers'
 require 'nokogiri'
 
 include Garnet
+include Test::Helpers
 
 describe BarChart do
   it 'will render the chart within a group' do
@@ -23,9 +24,8 @@ describe BarChart do
     mock.expect(:display_rect, [0, 0, 1200, 900])
 
     xml = BarChart.render(Builder::XmlMarkup.new(:indent => 2), mock)
-    doc = Nokogiri::XML(xml) { |config| config.strict }
 
-    doc.root.name.must_equal "g"
+    xml.must_have_root_name "g"
   end
 
   it 'will render each bar as four units wide' do
@@ -36,7 +36,7 @@ describe BarChart do
     xml = BarChart.render(Builder::XmlMarkup.new(:indent => 2), mock)
     doc = Nokogiri::XML(xml) { |config| config.strict }
 
-    doc.xpath("g/rect").count.must_equal 3
+    xml.must_have_count_elements "g/rect", 3
     doc.xpath("g/rect").each do |e|
       e.attribute("width").value.must_equal "4"
     end
@@ -52,7 +52,7 @@ describe BarChart do
     xml = BarChart.render(Builder::XmlMarkup.new(:indent => 2), mock)
     doc = Nokogiri::XML(xml) { |config| config.strict }
 
-    doc.xpath("g/rect").count.must_equal 3
+    xml.must_have_count_elements "g/rect", 3
     doc.xpath("g/rect").each_with_index do |e, i|
       e.attribute("height").value.must_equal data[i].to_s
     end

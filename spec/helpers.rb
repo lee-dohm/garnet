@@ -32,5 +32,19 @@ module Test
       doc.root.attributes['height'].value.must_equal chart.height.to_s
     end
     infect_an_assertion :assert_valid_root, :must_have_valid_root, true
+
+    def assert_element_count(xml, xpath, count)
+      doc = Nokogiri::XML(xml) { |config| config.strict }
+
+      doc.xpath(xpath).count.must_equal count
+    end
+    infect_an_assertion :assert_element_count, :must_have_count_elements, true
+
+    def assert_root_name_equal(xml, name)
+      doc = Nokogiri::XML(xml) { |config| config.strict }
+
+      doc.root.name.must_equal name
+    end
+    infect_an_assertion :assert_root_name_equal, :must_have_root_name, true
   end
 end
