@@ -18,22 +18,20 @@ include Garnet
 include Test::Helpers
 
 describe BarChart do
-  it 'will render the chart within a group' do
-    mock = MiniTest::Mock.new
-    mock.expect(:data, [10, 20, 30])
-    mock.expect(:display_rect, [0, 0, 1200, 900])
+  before do
+    @mock = MiniTest::Mock.new
+    @mock.expect(:data, [10, 20, 30])
+    @mock.expect(:display_rect, [0, 0, 1200, 900])
+  end
 
-    xml = BarChart.render(Builder::XmlMarkup.new(:indent => 2), mock)
+  it 'will render the chart within a group' do
+    xml = BarChart.render(Builder::XmlMarkup.new(:indent => 2), @mock)
 
     xml.must_have_root_name "g"
   end
 
   it 'will render each bar as four units wide' do
-    mock = MiniTest::Mock.new
-    mock.expect(:data, [10, 20, 30])
-    mock.expect(:display_rect, [0, 0, 1200, 900])
-
-    xml = BarChart.render(Builder::XmlMarkup.new(:indent => 2), mock)
+    xml = BarChart.render(Builder::XmlMarkup.new(:indent => 2), @mock)
     doc = Nokogiri::XML(xml) { |config| config.strict }
 
     xml.must_have_count_elements "g/rect", 3
@@ -45,11 +43,7 @@ describe BarChart do
   it 'will render each bar as its value high' do
     data = [10, 20, 30]
 
-    mock = MiniTest::Mock.new
-    mock.expect(:data, data)
-    mock.expect(:display_rect, [0, 0, 1200, 900])
-
-    xml = BarChart.render(Builder::XmlMarkup.new(:indent => 2), mock)
+    xml = BarChart.render(Builder::XmlMarkup.new(:indent => 2), @mock)
     doc = Nokogiri::XML(xml) { |config| config.strict }
 
     xml.must_have_count_elements "g/rect", 3
