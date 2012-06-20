@@ -46,5 +46,18 @@ module Test
       doc.root.name.must_equal name
     end
     infect_an_assertion :assert_root_name_equal, :must_have_root_name, true
+
+    def assert_attribute_on_element_equal(xml, attribute, xpath, value)
+      doc = Nokogiri::XML(xml) { |config| config.strict }
+
+      elements = doc.xpath(xpath)
+      case value
+      when Array
+        elements.each_with_index { |e,i| e.attribute(attribute).value.must_equal value[i].to_s }
+      else
+        elements.each { |e| e.attribute(attribute).value.must_equal value.to_s }
+      end
+    end
+    infect_an_assertion :assert_attribute_on_element_equal, :must_have_attribute_on_element_equal, true
   end
 end

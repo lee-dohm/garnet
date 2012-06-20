@@ -32,23 +32,17 @@ describe BarChart do
 
   it 'will render each bar as four units wide' do
     xml = BarChart.render(Builder::XmlMarkup.new(:indent => 2), @mock)
-    doc = Nokogiri::XML(xml) { |config| config.strict }
 
     xml.must_have_count_elements "g/rect", 3
-    doc.xpath("g/rect").each do |e|
-      e.attribute("width").value.must_equal "4"
-    end
+    xml.must_have_attribute_on_element_equal "width", "g/rect", "4"
   end
 
   it 'will render each bar as its value high' do
     data = [10, 20, 30]
 
     xml = BarChart.render(Builder::XmlMarkup.new(:indent => 2), @mock)
-    doc = Nokogiri::XML(xml) { |config| config.strict }
 
     xml.must_have_count_elements "g/rect", 3
-    doc.xpath("g/rect").each_with_index do |e, i|
-      e.attribute("height").value.must_equal data[i].to_s
-    end
+    xml.must_have_attribute_on_element_equal "height", "g/rect", data
   end
 end
