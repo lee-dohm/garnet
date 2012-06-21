@@ -12,16 +12,13 @@ require 'yard'
 CLEAN.include('.yardoc')
 CLOBBER.include('doc')
 
-task :default => [:test, :doc]
-
-desc "Perform static analysis"
-task :static => [:syntax, :reek]
-
-desc "Create documentation"
-task :doc => :yard
+task :default => [:test, :yard]
 
 desc "Execute all tests"
 task :test => [:static, :spec]
+
+desc "Perform static analysis"
+task :static => [:syntax, :reek]
 
 desc "Perform syntax check"
 task :syntax do
