@@ -71,7 +71,7 @@ describe BarChart do
 
   it 'will add a transform attribute to the group to scale to the display rect' do
     # Width divided by x-coord of the last bar plus width of the last bar plus one for the margin at the edge.
-    scale_x = @display_rect[2] / (@data.count * 5 + 1 + 4 + 1)
+    scale_x = @display_rect[2] / ((@data.count - 1) * 5 + 1 + 4 + 1)
     scale_y = @display_rect[3] / @data.max
 
     xml = BarChart.render(Builder::XmlMarkup.new(:indent => 2), @mock)

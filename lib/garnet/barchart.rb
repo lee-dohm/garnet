@@ -32,7 +32,8 @@ module Garnet
     # @param [Chart] chart Object describing the chart.
     def self.render(builder, chart)
       max = chart.data.max
-      scale_x = chart.display_rect[2] / (chart.data.count * (BAR_WIDTH + BETWEEN_BAR_MARGIN) + BAR_WIDTH + 2 * OUTSIDE_BAR_MARGIN)
+      count = chart.data.count
+      scale_x = chart.display_rect[2] / ((count * BAR_WIDTH) + ((count - 1) * BETWEEN_BAR_MARGIN) + (2 * OUTSIDE_BAR_MARGIN))
       scale_y = chart.display_rect[3] / max
 
       builder.g(:transform => "scale(#{scale_x}, #{scale_y})") do |b|
