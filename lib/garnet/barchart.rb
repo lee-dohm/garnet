@@ -17,8 +17,13 @@ module Garnet
     # 215 127 179
     # 114 114 114
 
+    # Margin to the left of the leftmost bar and to the right of the rightmost bar.
     OUTSIDE_BAR_MARGIN = 1
+
+    # Margin between bars.
     BETWEEN_BAR_MARGIN = 1
+
+    # Width of bars.
     BAR_WIDTH = 4
 
     # Renders the chart as a standard bar chart.
