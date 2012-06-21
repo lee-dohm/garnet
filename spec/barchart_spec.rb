@@ -60,7 +60,8 @@ describe BarChart do
   end
 
   it 'will render each bar at a y-position of the max value minus its value' do
-    data = [20, 10, 0]
+    max = @data.max
+    data = @data.map { |n| max - n }
 
     xml = BarChart.render(Builder::XmlMarkup.new(:indent => 2), @mock)
 
