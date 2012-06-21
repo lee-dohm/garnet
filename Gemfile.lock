@@ -1,0 +1,12 @@
+GEM
+  remote: http://rubygems.org/
+  specs:
+    builder (3.0.0)
+    nokogiri (1.5.4)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  builder (~> 3.0)
+  nokogiri (~> 1.5)
