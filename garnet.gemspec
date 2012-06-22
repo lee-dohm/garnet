@@ -19,7 +19,7 @@ Gem::Specification.new do |s|
   s.summary     = 'Accepts data and transforms it into SVG charts.'
   s.description = 'Accepts data and transforms it into SVG charts.'
 
-  s.required_rubygems_version = '>= 1.8.24'
+  s.required_rubygems_version = '~> 1.3'
 
   s.add_runtime_dependency 'builder'
 
