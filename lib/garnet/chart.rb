@@ -54,21 +54,21 @@ module Garnet
     #
     # @return [String] SVG text describing the chart.
     def render
-      b = Builder::XmlMarkup.new(:indent => 2)
+      builder = Builder::XmlMarkup.new(:indent => 2)
       
-      b.instruct! :xml, :version => "1.0", :standalone => "no"
-      b.declare! :DOCTYPE, :svg, :PUBLIC, "-//W3C//DTD SVG 1.1//EN", "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"
+      builder.instruct! :xml, :version => "1.0", :standalone => "no"
+      builder.declare! :DOCTYPE, :svg, :PUBLIC, "-//W3C//DTD SVG 1.1//EN", "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"
 
       options = {}
       options[:version] = '1.1'
       options[:xmlns] = 'http://www.w3.org/2000/svg' 
       options[:width] = @width
       options[:height] = @height
-      b.svg(options) do |builder|
-        @type.render(builder, self) unless @type.nil?
+      builder.svg(options) do |b|
+        @type.render(b, self) unless @type.nil?
       end
 
-      b.target!
+      builder.target!
     end
 
     # Sets the data to use to render the chart.

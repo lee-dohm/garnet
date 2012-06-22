@@ -17,12 +17,15 @@ GEM
     ruby_parser (2.3.1)
       sexp_processor (~> 3.0)
     sexp_processor (3.2.0)
+    yard (0.8.2.1)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
   builder (~> 3.0)
+  bundler (~> 1.0)
   minitest (~> 3.0)
   nokogiri (~> 1.5)
   reek (~> 1.2)
+  yard (~> 0.8)
