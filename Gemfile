@@ -7,6 +7,8 @@
 source :rubygems
 
 gem 'builder', '~> 3.0'
+gem 'bundler', '~> 1.0', :group => 'development'
 gem 'minitest', '~> 3.0', :group => 'test'
 gem 'nokogiri', '~> 1.5', :group => 'test'
 gem 'reek', '~> 1.2', :group => 'test'
+gem 'yard', '~> 0.8', :group => 'development'

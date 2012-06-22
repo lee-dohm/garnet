@@ -4,6 +4,6 @@
 # Copyright:: Copyright 2012 by Lifted Studios. All Rights Reserved.
 # 
 
-require 'garnet/barchart'
-require 'garnet/chart'
-require 'garnet/version'
+module Garnet
+  VERSION = '0.1.0'
+end
