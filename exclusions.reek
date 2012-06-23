@@ -1,0 +1,14 @@
+# 
+# Copyright:: Copyright (c) 2012 by Lifted Studios.  All Rights Reserved.
+# 
+
+LongMethod:
+  max_statements: 10
+
+NestedIterators:
+  exclude:
+  - BarChart#self.render
+
+UncommunicativeVariableName:
+  accept:
+  - b  
