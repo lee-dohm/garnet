@@ -19,6 +19,7 @@ Gem::Specification.new do |s|
   s.summary     = 'Accepts data and transforms it into SVG charts.'
   s.description = 'Accepts data and transforms it into SVG charts.'
 
+  s.required_ruby_version = '>= 1.9.2'
   s.required_rubygems_version = '~> 1.3'
 
   s.add_runtime_dependency 'builder'
@@ -29,6 +30,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'reek'
   s.add_development_dependency 'yard'
 
-  s.files = Dir.glob('{bin,lib}/**/*') + %w(LICENSE README.md)
+  s.files = `git ls-files`.split("\n").reject { |f| f =~ /^spec/ }
+  
   s.require_path = 'lib'
 end
