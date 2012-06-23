@@ -26,20 +26,26 @@ module Garnet
     # Width of bars.
     BAR_WIDTH = 4
 
-    # Renders the chart as a standard bar chart.
+    # Initializes a new instance of the +BarChart+ class.
     # 
     # @param [Builder::XmlMarkup] builder Builder object to use to emit XML.
     # @param [Chart] chart Object describing the chart.
-    def self.render(builder, chart)
-      data = chart.data
+    def initialize(builder, chart)
+      @builder = builder
+      @chart = chart
+    end
+
+    # Renders the chart from the data.
+    def render
+      data = @chart.data
       max = data.max
       count = data.count
 
-      display_rect = chart.display_rect
+      display_rect = @chart.display_rect
       scale_x = display_rect[2] / ((count * BAR_WIDTH) + ((count - 1) * BETWEEN_BAR_MARGIN) + (2 * OUTSIDE_BAR_MARGIN))
       scale_y = display_rect[3] / max
 
-      builder.g(:transform => "scale(#{scale_x}, #{scale_y})") do |b|
+      @builder.g(:transform => "scale(#{scale_x}, #{scale_y})") do |b|
         data.each_with_index do |datum, index|
           b.rect(:x => (index * (BAR_WIDTH + BETWEEN_BAR_MARGIN) + OUTSIDE_BAR_MARGIN), 
                        :y => (max - datum), 

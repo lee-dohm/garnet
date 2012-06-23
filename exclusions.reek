@@ -7,7 +7,7 @@ LongMethod:
 
 NestedIterators:
   exclude:
-  - BarChart#self.render
+  - "BarChart#render"
 
 UncommunicativeVariableName:
   accept:
