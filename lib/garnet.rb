@@ -6,4 +6,5 @@
 
 require 'garnet/barchart'
 require 'garnet/chart'
+require 'garnet/rect'
 require 'garnet/version'
