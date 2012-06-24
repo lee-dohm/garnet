@@ -26,5 +26,16 @@ module Garnet
       @width = width
       @height = height
     end
+
+    # Generates SVG-compliant instructions on how to transform this object
+    # into +rect+.
+    #
+    # @param rect Rectangle to transform this object into.
+    def transform(rect)
+      scale_x = rect.width / @width
+      scale_y = rect.height / @height
+
+      "scale(#{scale_x}, #{scale_y})"
+    end
   end
 end

@@ -31,4 +31,25 @@ describe Rect do
     rect.width.must_equal 3
     rect.height.must_equal 4
   end
+
+  it 'can generate scale instructions' do
+    orig_rect = Rect.new(0, 0, 12, 9)
+    new_rect = Rect.new(0, 0, 1200, 900)
+
+    orig_rect.transform(new_rect).must_equal "scale(100, 100)"
+  end
+
+  it 'can generate scale instructions for only the x-axis' do
+    orig_rect = Rect.new(0, 0, 12, 900)
+    new_rect = Rect.new(0, 0, 1200, 900)
+
+    orig_rect.transform(new_rect).must_equal "scale(100, 1)"
+  end
+
+  it 'can generate scale instructions for only the y-axis' do
+    orig_rect = Rect.new(0, 0, 1200, 9)
+    new_rect = Rect.new(0, 0, 1200, 900)
+
+    orig_rect.transform(new_rect).must_equal "scale(1, 100)"
+  end
 end
