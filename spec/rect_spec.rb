@@ -32,6 +32,13 @@ describe Rect do
     rect.height.must_equal 4
   end
 
+  it 'will generate no instructions if rects are equal' do
+    orig_rect = Rect.new(10, 20, 1200, 900)
+    new_rect = Rect.new(10, 20, 1200, 900)
+
+    orig_rect.transform(new_rect).must_be_empty
+  end
+
   it 'can generate scale instructions' do
     orig_rect = Rect.new(0, 0, 12, 9)
     new_rect = Rect.new(0, 0, 1200, 900)
@@ -58,5 +65,12 @@ describe Rect do
     new_rect = Rect.new(0, 0, 12, 9)
 
     orig_rect.transform(new_rect).must_equal "scale(0.01, 0.01)"
+  end
+
+  it 'can generate translation instructions' do
+    orig_rect = Rect.new(0, 0, 1200, 900)
+    new_rect = Rect.new(10, 20, 1200, 900)
+
+    orig_rect.transform(new_rect).must_equal "translate(10, 20)"
   end
 end

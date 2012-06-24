@@ -27,7 +27,7 @@ task :syntax do
 end
 
 Reek::Rake::Task.new do |t|
-  t.fail_on_error = true
+  t.fail_on_error = false
 end
 
 Rake::TestTask.new('spec') do |spec|

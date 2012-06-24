@@ -27,24 +27,35 @@ module Garnet
       @height = height
     end
 
-    # Generates SVG-compliant instructions on how to transform this object
-    # into +rect+.
+    # Generates SVG-compliant instructions on how to transform this object into +rect+.
     #
     # @param rect Rectangle to transform this object into.
     def transform(rect)
-      if rect.width % @width == 0
-        scale_x = rect.width / @width
-      else
-        scale_x = rect.width.to_f / @width
-      end
+      scale_x = clean_divide(rect.width, @width)
+      scale_y = clean_divide(rect.height, @height)
 
-      if rect.height % @height == 0        
-        scale_y = rect.height / @height
-      else
-        scale_y = rect.height.to_f / @height
-      end
+      translate_x = rect.min_x - @min_x
+      translate_y = rect.min_y - @min_y
 
-      "scale(#{scale_x}, #{scale_y})"
+      instructions = []
+      instructions << "scale(#{scale_x}, #{scale_y})" unless scale_x == 1 && scale_y == 1
+      instructions << "translate(#{translate_x}, #{translate_y})" unless translate_x == 0 && translate_y == 0
+
+      instructions.join(", ")
     end
+
+    # Performs integer division if +num+ is a multiple of +den+, otherwise performs floating-point division.
+    # 
+    # @param num Numerator in the division.
+    # @param den Denominator in the division.
+    # @return [Numeric] Result of the division.
+    def clean_divide(num, den)
+      if num % den == 0
+        num / den
+      else
+        num.to_f / den
+      end
+    end
+    private :clean_divide
   end
 end
