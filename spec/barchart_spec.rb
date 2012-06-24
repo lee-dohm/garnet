@@ -80,4 +80,24 @@ describe BarChart do
 
     xml.must_have_attribute_on_element_equal "transform", "g", "scale(#{scale_x}, #{scale_y})"
   end
+
+  it 'will add a translate transformation if the display_rect does not have a min-x of 0' do
+    @display_rect[0] = 5
+    scale_x = @display_rect[2] / ((@data.count - 1) * 5 + 1 + 4 + 1)
+    scale_y = @display_rect[3] / @data.max
+
+    xml = @chart.render
+
+    xml.must_have_attribute_on_element_equal "transform", "g", "scale(#{scale_x}, #{scale_y}), translate(5, 0)"
+  end
+
+  it 'will add a translate transformation if the display_rect does not have a min-y of 0' do
+    @display_rect[1] = 5
+    scale_x = @display_rect[2] / ((@data.count - 1) * 5 + 1 + 4 + 1)
+    scale_y = @display_rect[3] / @data.max
+
+    xml = @chart.render
+
+    xml.must_have_attribute_on_element_equal "transform", "g", "scale(#{scale_x}, #{scale_y}), translate(0, 5)"
+  end
 end
