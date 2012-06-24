@@ -32,8 +32,17 @@ module Garnet
     #
     # @param rect Rectangle to transform this object into.
     def transform(rect)
-      scale_x = rect.width / @width
-      scale_y = rect.height / @height
+      if rect.width % @width == 0
+        scale_x = rect.width / @width
+      else
+        scale_x = rect.width.to_f / @width
+      end
+
+      if rect.height % @height == 0        
+        scale_y = rect.height / @height
+      else
+        scale_y = rect.height.to_f / @height
+      end
 
       "scale(#{scale_x}, #{scale_y})"
     end

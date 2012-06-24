@@ -2,6 +2,9 @@
 # Copyright:: Copyright (c) 2012 by Lifted Studios.  All Rights Reserved.
 # 
 
+Duplication:
+  enabled: false
+
 LongMethod:
   max_statements: 10
 

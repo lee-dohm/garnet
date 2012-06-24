@@ -52,4 +52,11 @@ describe Rect do
 
     orig_rect.transform(new_rect).must_equal "scale(1, 100)"
   end
+
+  it 'can generate shrinking scale instructions too' do
+    orig_rect = Rect.new(0, 0, 1200, 900)
+    new_rect = Rect.new(0, 0, 12, 9)
+
+    orig_rect.transform(new_rect).must_equal "scale(0.01, 0.01)"
+  end
 end
