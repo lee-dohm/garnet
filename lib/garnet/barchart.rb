@@ -39,15 +39,14 @@ module Garnet
     def render
       data = @chart.data
       max = data.max
-      count = data.count
       chart_rect = Rect.new(0, 0, chart_width, max)
 
       @builder.g(:transform => chart_rect.transform(@chart.display_rect)) do |b|
         data.each_with_index do |datum, index|
           b.rect(:x => (index * (BAR_WIDTH + BETWEEN_BAR_MARGIN) + OUTSIDE_BAR_MARGIN), 
-                       :y => (max - datum), 
-                       :width => BAR_WIDTH, 
-                       :height => datum.to_s)
+                 :y => (max - datum), 
+                 :width => BAR_WIDTH, 
+                 :height => datum.to_s)
         end
       end
     end

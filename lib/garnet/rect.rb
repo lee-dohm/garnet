@@ -62,11 +62,7 @@ module Garnet
     # @param den Denominator in the division.
     # @return [Numeric] Result of the division.
     def clean_divide(num, den)
-      if num % den == 0
-        num / den
-      else
-        num.to_f / den
-      end
+      num % den == 0 ? num / den : num.to_f / den
     end
     private :clean_divide
   end

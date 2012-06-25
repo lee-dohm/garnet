@@ -78,9 +78,11 @@ describe Chart do
   end
 
   it 'will raise an error if the type that is set does not respond to #render' do
+    mock = MiniTest::Mock.new
+
     proc {
       Chart.new(DEFAULT_WIDTH, DEFAULT_HEIGHT) do
-        set_type Numeric
+        set_type mock
       end
     }.must_raise InvalidChartTypeError
   end
