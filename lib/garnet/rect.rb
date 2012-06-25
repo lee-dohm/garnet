@@ -30,6 +30,7 @@ module Garnet
     # Generates SVG-compliant instructions on how to transform this object into +rect+.
     #
     # @param rect Rectangle to transform this object into.
+    # @return [String] SVG transformation instructions, if any.
     def transform(rect)
       scale_x = clean_divide(rect.width, @width)
       scale_y = clean_divide(rect.height, @height)
@@ -42,6 +43,17 @@ module Garnet
       instructions << "translate(#{translate_x}, #{translate_y})" unless translate_x == 0 && translate_y == 0
 
       instructions.join(", ")
+    end
+
+    # Determines equality between this and the given +rect+.
+    # 
+    # @param rect Rectangle to compare this object with.
+    # @return [Boolean] +true+ if the two objects are equal.
+    def ==(rect)
+      @min_x == rect.min_x &&
+      @min_y == rect.min_y &&
+      @width == rect.width &&
+      @height == rect.height
     end
 
     # Performs integer division if +num+ is a multiple of +den+, otherwise performs floating-point division.

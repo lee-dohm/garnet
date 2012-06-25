@@ -73,4 +73,18 @@ describe Rect do
 
     orig_rect.transform(new_rect).must_equal "translate(10, 20)"
   end
+
+  it 'can generate both scale and translation instructions' do
+    orig_rect = Rect.new(0, 0, 12, 9)
+    new_rect = Rect.new(10, 20, 1200, 900)
+
+    orig_rect.transform(new_rect).must_equal "scale(100, 100), translate(10, 20)"
+  end
+
+  it 'will support equality' do
+    orig_rect = Rect.new(0, 0, 1200, 900)
+    new_rect = Rect.new(0, 0, 1200, 900)
+
+    (orig_rect == new_rect).must_equal true
+  end
 end

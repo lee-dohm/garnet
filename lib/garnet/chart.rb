@@ -17,7 +17,7 @@ module Garnet
     # Data to be displayed in the chart.
     attr_reader :data
 
-    # Rectangle within the image to display the actual chart.  Expressed as an array of four numbers: min-x, min-y, width, height.
+    # Rectangle within the image to display the actual chart.
     attr_reader :display_rect
 
     # Height of the generated image.
@@ -43,7 +43,7 @@ module Garnet
       @height = height
       @type = nil
 
-      @display_rect = [0, 0, @width, @height]
+      @display_rect = Rect.new(0, 0, @width, @height)
 
       unless block.nil?
         instance_exec(&block)

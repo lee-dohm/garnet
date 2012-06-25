@@ -40,18 +40,9 @@ module Garnet
       data = @chart.data
       max = data.max
       count = data.count
-      display_rect = @chart.display_rect
+      chart_rect = Rect.new(0, 0, chart_width, max)
 
-      scale_x, scale_y = calculate_scale
-
-      min_x = display_rect[0]
-      min_y = display_rect[1]
-      translate = ""
-      if min_x > 0 || min_y > 0
-        translate << ", translate(#{min_x}, #{min_y})"
-      end
-
-      @builder.g(:transform => "scale(#{scale_x}, #{scale_y})#{translate}") do |b|
+      @builder.g(:transform => chart_rect.transform(@chart.display_rect)) do |b|
         data.each_with_index do |datum, index|
           b.rect(:x => (index * (BAR_WIDTH + BETWEEN_BAR_MARGIN) + OUTSIDE_BAR_MARGIN), 
                        :y => (max - datum), 
@@ -61,17 +52,12 @@ module Garnet
       end
     end
 
-    def calculate_scale
-      display_rect = @chart.display_rect
-      data = @chart.data
-      max = data.max
-      count = data.count
-
-      scale_x = display_rect[2] / ((count * BAR_WIDTH) + ((count - 1) * BETWEEN_BAR_MARGIN) + (2 * OUTSIDE_BAR_MARGIN))
-      scale_y = display_rect[3] / max
-
-      return scale_x, scale_y
+    # Calculates the width of the chart before any transformations.
+    # 
+    # @return [Numeric] Width of the chart.
+    def chart_width
+      (@chart.data.count * BAR_WIDTH) + ((@chart.data.count - 1) * BETWEEN_BAR_MARGIN) + 2 * OUTSIDE_BAR_MARGIN
     end
-    private :calculate_scale
+    private :chart_width
   end
 end

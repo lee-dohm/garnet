@@ -62,7 +62,7 @@ describe Chart do
   it 'will have a default display rect of 0 0 width height' do
     chart = Chart.new(DEFAULT_WIDTH, DEFAULT_HEIGHT)
 
-    chart.display_rect.must_equal [0, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT]
+    chart.display_rect.must_equal Rect.new(0, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT)
   end
 
   it 'can have a chart type assigned to it' do
