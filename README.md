@@ -1,19 +1,17 @@
 
-# Project: Garnet #
+# Garnet: SVG Charts in Ruby #
 
-## Goal ##
+Garnet is a tool for easily transforming data sets into [SVG](http://www.w3.org/TR/SVG/) chart images.  The idea is to provide a simple, declarative language for describing the chart and allowing the library to do the heavy lifting.
 
-Provide a library for easily transforming data sets into [SVG](http://www.w3.org/TR/SVG/) chart images.
+## Installation and Usage ##
 
-## Classes ##
+Garnet is installed like any other Ruby gem:
 
-- **Garnet::Chart** - Accept data and generate the SVG image output.
-
-## Usage ##
+    sudo gem install garnet
 
 ## Compatibility ##
 
-## Features ##
+Garnet requires Ruby 1.9.x and has been tested on Ruby 1.9.2 and 1.9.3.
 
 ## Contact ##
 
