@@ -6,7 +6,6 @@
 
 require 'rake/clean'
 require 'rake/testtask'
-require 'reek/rake/task'
 require 'yard'
 
 CLEAN.include('.yardoc')
@@ -18,16 +17,12 @@ desc "Execute all tests"
 task :test => [:static, :spec]
 
 desc "Perform static analysis"
-task :static => [:syntax, :reek]
+task :static => [:syntax]
 
 desc "Perform syntax check"
 task :syntax do
   files = Dir['lib/**/*.rb']
   files.each { |file| sh "ruby -c #{file}" }
-end
-
-Reek::Rake::Task.new do |t|
-  t.fail_on_error = false
 end
 
 Rake::TestTask.new('spec') do |spec|
