@@ -7,6 +7,9 @@
 module Garnet
   # Defines the standard bar chart type.
   class BarChart
+    # Color or colors to use to draw bars.
+    attr_accessor :colors
+
     # Colors:
     # 89 154 211
     # 241 89 95
@@ -33,6 +36,7 @@ module Garnet
     def initialize(builder, chart)
       @builder = builder
       @chart = chart
+      @colors = "rgb(89, 154, 211)"
     end
 
     # Renders the chart from the data.
@@ -43,11 +47,18 @@ module Garnet
 
       @builder.g(:transform => chart_rect.transform(@chart.display_rect)) do |b|
         data.each_with_index do |datum, index|
+          case @colors
+          when Array
+            color = @colors[index % @colors.count]
+          else
+            color = @colors
+          end
+
           b.rect(:x => (index * (BAR_WIDTH + BETWEEN_BAR_MARGIN) + OUTSIDE_BAR_MARGIN), 
                  :y => (max - datum), 
                  :width => BAR_WIDTH, 
                  :height => datum.to_s,
-                 :fill => "rgb(89, 154, 211)")
+                 :fill => color)
         end
       end
     end

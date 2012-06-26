@@ -77,6 +77,29 @@ describe BarChart do
     xml.must_have_attribute_on_element_equal "fill", "g/rect", "rgb(89, 154, 211)"
   end
 
+  it 'will render each bar in the assigned color' do
+    @chart.colors = "blue"
+    xml = @chart.render
+
+    xml.must_have_attribute_on_element_equal "fill", "g/rect", "blue"
+  end
+
+  it 'will render each bar in the color that matches its index in the color array' do
+    data = ["blue", "red", "green"]
+    @chart.colors = data
+    xml = @chart.render
+
+    xml.must_have_attribute_on_element_equal "fill", "g/rect", data
+  end
+
+  it 'will start over with the first color if we run out of colors' do
+    data = ["blue", "red", "blue"]
+    @chart.colors = ["blue", "red"]
+    xml = @chart.render
+
+    xml.must_have_attribute_on_element_equal "fill", "g/rect", data
+  end
+
   it 'will add a transform attribute to the group to scale to the display rect' do
     # Width divided by x-coord of the last bar plus width of the last bar plus one for the margin at the edge.
     scale_x = @display_rect.width / ((@data.count - 1) * 5 + 1 + 4 + 1)
