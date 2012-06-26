@@ -71,6 +71,12 @@ describe BarChart do
     xml.must_have_attribute_on_element_equal "y", "g/rect", data
   end
 
+  it 'will render each bar with a default color if none is supplied' do
+    xml = @chart.render
+
+    xml.must_have_attribute_on_element_equal "fill", "g/rect", "rgb(89, 154, 211)"
+  end
+
   it 'will add a transform attribute to the group to scale to the display rect' do
     # Width divided by x-coord of the last bar plus width of the last bar plus one for the margin at the edge.
     scale_x = @display_rect.width / ((@data.count - 1) * 5 + 1 + 4 + 1)

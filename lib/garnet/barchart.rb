@@ -46,7 +46,8 @@ module Garnet
           b.rect(:x => (index * (BAR_WIDTH + BETWEEN_BAR_MARGIN) + OUTSIDE_BAR_MARGIN), 
                  :y => (max - datum), 
                  :width => BAR_WIDTH, 
-                 :height => datum.to_s)
+                 :height => datum.to_s,
+                 :fill => "rgb(89, 154, 211)")
         end
       end
     end
