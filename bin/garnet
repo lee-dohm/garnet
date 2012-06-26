@@ -1,0 +1,18 @@
+#!/usr/bin/env ruby
+# encoding: UTF-8
+
+require 'garnet'
+
+include Garnet
+
+data = []
+ARGF.each do |item|
+  data << item.chomp.to_i
+end
+
+chart = Chart.new(400, 300) do
+  set_data data
+  set_type BarChart
+end
+
+chart.render
