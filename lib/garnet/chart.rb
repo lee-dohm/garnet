@@ -65,7 +65,10 @@ module Garnet
       options[:width] = @width
       options[:height] = @height
       builder.svg(options) do |b|
-        @type.render(b, self) unless @type.nil?
+        unless @type.nil?
+          type = @type.new(b, self)
+          type.render
+        end
       end
 
       builder.target!
@@ -79,7 +82,7 @@ module Garnet
 
     # Sets the type of chart to render.
     def set_type(type)
-      raise InvalidChartTypeError, "#{type.to_s} is not a valid chart type." unless type.respond_to?(:render)
+      raise InvalidChartTypeError, "#{type.to_s} is not a valid chart type." unless type.public_instance_methods.include?(:render)
 
       @type = type
     end

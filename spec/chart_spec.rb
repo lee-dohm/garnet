@@ -66,19 +66,21 @@ describe Chart do
   end
 
   it 'can have a chart type assigned to it' do
-    mock = MiniTest::Mock.new
-    mock.expect(:render, nil)
-    mock.expect(:must_equal, mock, [mock])
+    type_mock = MiniTest::Mock.new
+    instance_mock = MiniTest::Mock.new
+    type_mock.expect(:new, instance_mock, [Builder::XmlMarkup, Chart])
+    type_mock.expect(:public_instance_methods, [:render])
+    instance_mock.expect(:render, nil)
+    instance_mock.expect(:nil?, false)
 
     chart = Chart.new(DEFAULT_WIDTH, DEFAULT_HEIGHT) do
-      set_type mock
+      set_type type_mock
     end
-
-    chart.type.must_equal mock
   end
 
   it 'will raise an error if the type that is set does not respond to #render' do
     mock = MiniTest::Mock.new
+    mock.expect(:public_instance_methods, [])
 
     proc {
       Chart.new(DEFAULT_WIDTH, DEFAULT_HEIGHT) do
@@ -88,16 +90,20 @@ describe Chart do
   end
 
   it 'will call the chart type render method when render is called' do
-    mock = MiniTest::Mock.new
-    mock.expect(:render, nil, [Builder::XmlMarkup, Chart])
-    mock.expect(:nil?, false)
+    type_mock = MiniTest::Mock.new
+    instance_mock = MiniTest::Mock.new
+    type_mock.expect(:new, instance_mock, [Builder::XmlMarkup, Chart])
+    type_mock.expect(:public_instance_methods, [:render])
+    type_mock.expect(:nil?, false)
+    instance_mock.expect(:render, nil)
 
     chart = Chart.new(DEFAULT_WIDTH, DEFAULT_HEIGHT) do
-      set_type mock
+      set_type type_mock
     end
 
     chart.render
 
-    mock.verify
+    type_mock.verify
+    instance_mock.verify
   end
 end

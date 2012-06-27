@@ -15,4 +15,4 @@ chart = Chart.new(400, 300) do
   set_type BarChart
 end
 
-chart.render
+puts chart.render
