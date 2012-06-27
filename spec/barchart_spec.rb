@@ -20,7 +20,7 @@ include Test::Helpers
 describe BarChart do
   before do
     @data = [10, 20, 30]
-    @display_rect = Rect.new(0, 0, 1200, 900)
+    @display_rect = Rect.new(0, 0, 1400, 1050)
 
     @mock = MiniTest::Mock.new
     @mock.expect(:data, @data)
@@ -52,8 +52,8 @@ describe BarChart do
     xml.must_have_attribute_on_element_equal "height", "g/rect", @data
   end
 
-  it 'will render each bar at an x-position of five times its index plus one' do
-    data = 0.upto(2).map { |i| 5 * i + 1 }
+  it 'will render each bar at an x-position of five times its index' do
+    data = 0.upto(2).map { |i| 5 * i }
 
     xml = @chart.render
 
@@ -101,8 +101,8 @@ describe BarChart do
   end
 
   it 'will add a transform attribute to the group to scale to the display rect' do
-    # Width divided by x-coord of the last bar plus width of the last bar plus one for the margin at the edge.
-    scale_x = @display_rect.width / ((@data.count - 1) * 5 + 1 + 4 + 1)
+    # Width divided by x-coord of the last bar plus width of the last bar.
+    scale_x = @display_rect.width / ((@data.count - 1) * 5 + 4)
     scale_y = @display_rect.height / @data.max
 
     xml = @chart.render
@@ -112,7 +112,7 @@ describe BarChart do
 
   it 'will add a translate transformation if the display_rect does not have a min-x of 0' do
     @display_rect.min_x = 5
-    scale_x = @display_rect.width / ((@data.count - 1) * 5 + 1 + 4 + 1)
+    scale_x = @display_rect.width / ((@data.count - 1) * 5 + 4)
     scale_y = @display_rect.height / @data.max
 
     xml = @chart.render
@@ -122,7 +122,7 @@ describe BarChart do
 
   it 'will add a translate transformation if the display_rect does not have a min-y of 0' do
     @display_rect.min_y = 5
-    scale_x = @display_rect.width / ((@data.count - 1) * 5 + 1 + 4 + 1)
+    scale_x = @display_rect.width / ((@data.count - 1) * 5 + 4)
     scale_y = @display_rect.height / @data.max
 
     xml = @chart.render

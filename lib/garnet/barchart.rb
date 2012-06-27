@@ -20,9 +20,6 @@ module Garnet
     # 215 127 179
     # 114 114 114
 
-    # Margin to the left of the leftmost bar and to the right of the rightmost bar.
-    OUTSIDE_BAR_MARGIN = 1
-
     # Margin between bars.
     BETWEEN_BAR_MARGIN = 1
 
@@ -54,7 +51,7 @@ module Garnet
             color = @colors
           end
 
-          b.rect(:x => (index * (BAR_WIDTH + BETWEEN_BAR_MARGIN) + OUTSIDE_BAR_MARGIN), 
+          b.rect(:x => (index * (BAR_WIDTH + BETWEEN_BAR_MARGIN)), 
                  :y => (max - datum), 
                  :width => BAR_WIDTH, 
                  :height => datum.to_s,
@@ -67,7 +64,7 @@ module Garnet
     # 
     # @return [Numeric] Width of the chart.
     def chart_width
-      (@chart.data.count * BAR_WIDTH) + ((@chart.data.count - 1) * BETWEEN_BAR_MARGIN) + 2 * OUTSIDE_BAR_MARGIN
+      (@chart.data.count * BAR_WIDTH) + ((@chart.data.count - 1) * BETWEEN_BAR_MARGIN)
     end
     private :chart_width
   end
