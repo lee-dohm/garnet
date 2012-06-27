@@ -10,9 +10,9 @@ ARGF.each do |item|
   data << item.chomp.to_i
 end
 
-chart = Chart.new(400, 300) do
-  set_data data
-  set_type BarChart
+chart = Chart.new(400, 300) do |c|
+  c.set_data data
+  c.set_type BarChart
 end
 
 puts chart.render

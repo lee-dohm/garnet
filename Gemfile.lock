@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    garnet (0.1.0)
+    garnet (0.5.0)
       builder (~> 3.0)
 
 GEM

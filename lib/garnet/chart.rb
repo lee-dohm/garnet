@@ -33,9 +33,8 @@ module Garnet
     # 
     # @param width Width of the image to generate.
     # @param height Height of the image to generate.
-    # @param block Instructions on how to build the chart.
     # @raise [ArgumentError] When width or height are negative.
-    def initialize(width, height, &block)
+    def initialize(width, height)
       raise ArgumentError, "Width cannot be negative" if width < 0
       raise ArgumentError, "Height cannot be negative" if height < 0
 
@@ -45,9 +44,7 @@ module Garnet
 
       @display_rect = Rect.new(0, 0, @width, @height)
 
-      unless block.nil?
-        instance_exec(&block)
-      end
+      yield self if block_given?
     end
 
     # Renders the chart as an SVG image.
@@ -78,7 +75,6 @@ module Garnet
     def set_data(data)
       @data = data
     end
-    private :set_data
 
     # Sets the type of chart to render.
     def set_type(type)
@@ -86,6 +82,5 @@ module Garnet
 
       @type = type
     end
-    private :set_type
   end
 end
