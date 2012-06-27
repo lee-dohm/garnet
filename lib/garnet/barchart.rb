@@ -7,6 +7,12 @@
 module Garnet
   # Defines the standard bar chart type.
   class BarChart
+    # Width of bars.
+    attr_accessor :bar_width
+
+    # Margin between bars.
+    attr_accessor :between_bar_margin
+
     # Color or colors to use to draw bars.
     attr_accessor :colors
 
@@ -20,12 +26,6 @@ module Garnet
     # 215 127 179
     # 114 114 114
 
-    # Margin between bars.
-    BETWEEN_BAR_MARGIN = 1
-
-    # Width of bars.
-    BAR_WIDTH = 4
-
     # Initializes a new instance of the +BarChart+ class.
     # 
     # @param [Builder::XmlMarkup] builder Builder object to use to emit XML.
@@ -34,6 +34,8 @@ module Garnet
       @builder = builder
       @chart = chart
       @colors = "rgb(89, 154, 211)"
+      @bar_width = 4
+      @between_bar_margin = 1
     end
 
     # Renders the chart from the data.
@@ -51,9 +53,9 @@ module Garnet
             color = @colors
           end
 
-          b.rect(:x => (index * (BAR_WIDTH + BETWEEN_BAR_MARGIN)), 
+          b.rect(:x => (index * (@bar_width + @between_bar_margin)), 
                  :y => (max - datum), 
-                 :width => BAR_WIDTH, 
+                 :width => @bar_width, 
                  :height => datum.to_s,
                  :fill => color)
         end
@@ -64,7 +66,7 @@ module Garnet
     # 
     # @return [Numeric] Width of the chart.
     def chart_width
-      (@chart.data.count * BAR_WIDTH) + ((@chart.data.count - 1) * BETWEEN_BAR_MARGIN)
+      (@chart.data.count * @bar_width) + ((@chart.data.count - 1) * @between_bar_margin)
     end
     private :chart_width
   end

@@ -32,6 +32,11 @@ describe BarChart do
     @chart = BarChart.new(Builder::XmlMarkup.new(:indent => 2), @mock)
   end
 
+  it 'can be instantiated' do
+    @chart.bar_width.must_equal 4
+    @chart.between_bar_margin.must_equal 1
+  end
+
   it 'will render the chart within a group' do
     xml = @chart.render
 
@@ -102,7 +107,7 @@ describe BarChart do
 
   it 'will add a transform attribute to the group to scale to the display rect' do
     # Width divided by x-coord of the last bar plus width of the last bar.
-    scale_x = @display_rect.width / ((@data.count - 1) * 5 + 4)
+    scale_x = @display_rect.width / ((@data.count - 1) * (@chart.bar_width + @chart.between_bar_margin) + @chart.bar_width)
     scale_y = @display_rect.height / @data.max
 
     xml = @chart.render
@@ -112,7 +117,7 @@ describe BarChart do
 
   it 'will add a translate transformation if the display_rect does not have a min-x of 0' do
     @display_rect.min_x = 5
-    scale_x = @display_rect.width / ((@data.count - 1) * 5 + 4)
+    scale_x = @display_rect.width / ((@data.count - 1) * (@chart.bar_width + @chart.between_bar_margin) + @chart.bar_width)
     scale_y = @display_rect.height / @data.max
 
     xml = @chart.render
@@ -122,7 +127,7 @@ describe BarChart do
 
   it 'will add a translate transformation if the display_rect does not have a min-y of 0' do
     @display_rect.min_y = 5
-    scale_x = @display_rect.width / ((@data.count - 1) * 5 + 4)
+    scale_x = @display_rect.width / ((@data.count - 1) * (@chart.bar_width + @chart.between_bar_margin) + @chart.bar_width)
     scale_y = @display_rect.height / @data.max
 
     xml = @chart.render
