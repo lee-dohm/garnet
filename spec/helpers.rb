@@ -7,7 +7,7 @@
 require 'nokogiri'
 
 module Test
-  # Various helper methods for executing tests.
+  # Various helper classes and methods for executing tests.
   module Helpers
     def assert_xml_declaration(xml)
       lines = xml.split("\n")

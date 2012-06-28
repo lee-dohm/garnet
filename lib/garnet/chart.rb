@@ -17,9 +17,6 @@ module Garnet
     # Data to be displayed in the chart.
     attr_accessor :data
 
-    # Rectangle within the image to display the actual chart.
-    attr_reader :display_rect
-
     # Features of the chart other than the chart itself.
     attr_reader :features
 
@@ -49,6 +46,30 @@ module Garnet
       @display_rect = Rect.new(0, 0, @width, @height)
 
       yield self if block_given?
+    end
+
+    # Rectangle within the image to display the actual chart.
+    def display_rect
+      rect = @display_rect
+
+      @features.each do |f|
+        feature_rect = f.rectangle
+
+        case f.placement
+        when :left
+          rect.min_x += feature_rect.width
+          rect.width -= feature_rect.width
+        when :right
+          rect.width -= feature_rect.width
+        when :above
+          rect.min_y += feature_rect.height
+          rect.height -= feature_rect.height
+        when :below
+          rect.height -= feature_rect.height
+        end
+      end
+
+      rect
     end
 
     # Renders the chart as an SVG image.

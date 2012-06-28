@@ -120,4 +120,52 @@ describe Chart do
 
     chart.features.must_include mock
   end
+
+  it 'will allow features to be placed to the left of the chart' do
+    mock = MiniTest::Mock.new
+    mock.expect(:placement, :left)
+    mock.expect(:rectangle, Rect.new(0, 0, 100, DEFAULT_HEIGHT))
+
+    chart = Chart.new(DEFAULT_WIDTH, DEFAULT_HEIGHT) do |c|
+      c.features << mock
+    end
+
+    chart.display_rect.must_equal Rect.new(100, 0, DEFAULT_WIDTH - 100, DEFAULT_HEIGHT)
+  end
+
+  it 'will allow features to be placed to the right of the chart' do
+    mock = MiniTest::Mock.new
+    mock.expect(:placement, :right)
+    mock.expect(:rectangle, Rect.new(0, 0, 100, DEFAULT_HEIGHT))
+
+    chart = Chart.new(DEFAULT_WIDTH, DEFAULT_HEIGHT) do |c|
+      c.features << mock
+    end
+
+    chart.display_rect.must_equal Rect.new(0, 0, DEFAULT_WIDTH - 100, DEFAULT_HEIGHT)
+  end
+
+  it 'will allow features to be placed above the chart' do
+    mock = MiniTest::Mock.new
+    mock.expect(:placement, :above)
+    mock.expect(:rectangle, Rect.new(0, 0, DEFAULT_WIDTH, 100))
+
+    chart = Chart.new(DEFAULT_WIDTH, DEFAULT_HEIGHT) do |c|
+      c.features << mock
+    end
+
+    chart.display_rect.must_equal Rect.new(0, 100, DEFAULT_WIDTH, DEFAULT_HEIGHT - 100)
+  end
+
+  it 'will allow features to be placed below the chart' do
+    mock = MiniTest::Mock.new
+    mock.expect(:placement, :below)
+    mock.expect(:rectangle, Rect.new(0, 0, DEFAULT_WIDTH, 100))
+
+    chart = Chart.new(DEFAULT_WIDTH, DEFAULT_HEIGHT) do |c|
+      c.features << mock
+    end
+
+    chart.display_rect.must_equal Rect.new(0, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT - 100)
+  end
 end
