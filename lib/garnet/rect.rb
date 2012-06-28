@@ -27,6 +27,24 @@ module Garnet
       @height = height
     end
 
+    # Creates a mask on the given side and of the given size.
+    # 
+    # @param side One of :left, :right, :top or :bottom.
+    # @param size The thickness of the mask.
+    # @return [Rect] A rectangle describing the masked off area.
+    def create_mask(side, size)
+      case side
+      when :left
+        Rect.new(@min_x, @min_y, size, @height)
+      when :right
+        Rect.new(@width - size, @min_y, size, @height)
+      when :top
+        Rect.new(@min_x, @min_y, @width, size)
+      when :bottom
+        Rect.new(@min_x, @height - size, @width, size)
+      end
+    end
+
     # Generates SVG-compliant instructions on how to transform this object into +rect+.
     #
     # @param rect Rectangle to transform this object into.

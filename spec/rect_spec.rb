@@ -123,4 +123,36 @@ describe Rect do
 
     new_rect.must_equal Rect.new(0, 0, 1200, 800)
   end
+
+  it 'can create a mask from the left' do
+    rect = Rect.new(0, 0, 1200, 900)
+    
+    mask = rect.create_mask(:left, 100)
+
+    mask.must_equal Rect.new(0, 0, 100, 900)
+  end
+
+  it 'can create a mask from the right' do
+    rect = Rect.new(0, 0, 1200, 900)
+    
+    mask = rect.create_mask(:right, 100)
+
+    mask.must_equal Rect.new(1100, 0, 100, 900)
+  end
+
+  it 'can create a mask from the top' do
+    rect = Rect.new(0, 0, 1200, 900)
+
+    mask = rect.create_mask(:top, 100)
+
+    mask.must_equal Rect.new(0, 0, 1200, 100)
+  end
+
+  it 'can create a mask from the bottom' do
+    rect = Rect.new(0, 0, 1200, 900)
+
+    mask = rect.create_mask(:bottom, 100)
+
+    mask.must_equal Rect.new(0, 800, 1200, 100)
+  end
 end
