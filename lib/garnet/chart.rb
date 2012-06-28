@@ -20,6 +20,9 @@ module Garnet
     # Rectangle within the image to display the actual chart.
     attr_reader :display_rect
 
+    # Features of the chart other than the chart itself.
+    attr_reader :features
+
     # Height of the generated image.
     attr_reader :height
 
@@ -41,6 +44,7 @@ module Garnet
       @width = width
       @height = height
       @type = nil
+      @features = []
 
       @display_rect = Rect.new(0, 0, @width, @height)
 

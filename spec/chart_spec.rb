@@ -27,6 +27,10 @@ describe Chart do
 
     chart.width.must_equal DEFAULT_WIDTH
     chart.height.must_equal DEFAULT_HEIGHT
+    chart.features.must_equal []
+    chart.display_rect.must_equal Rect.new(0, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT)
+    chart.type.must_be_nil
+    chart.data.must_be_nil
   end
 
   it 'will raise an error on negative width' do
@@ -105,5 +109,15 @@ describe Chart do
 
     type_mock.verify
     instance_mock.verify
+  end
+
+  it 'will allow features to be added to the chart' do
+    mock = MiniTest::Mock.new
+
+    chart = Chart.new(DEFAULT_WIDTH, DEFAULT_HEIGHT) do |c|
+      c.features << mock
+    end
+
+    chart.features.must_include mock
   end
 end
