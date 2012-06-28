@@ -87,4 +87,40 @@ describe Rect do
 
     (orig_rect == new_rect).must_equal true
   end
+
+  it 'can have a rectangle subtracted from the left' do
+    rect = Rect.new(0, 0, 1200, 900)
+    mask = Rect.new(0, 0, 100, 900)
+
+    new_rect = rect - mask
+
+    new_rect.must_equal Rect.new(100, 0, 1100, 900)
+  end
+
+  it 'can have a rectangle subtracted from the top' do
+    rect = Rect.new(0, 0, 1200, 900)
+    mask = Rect.new(0, 0, 1200, 100)
+
+    new_rect = rect - mask
+
+    new_rect.must_equal Rect.new(0, 100, 1200, 800)
+  end
+
+  it 'can have a rectangle subtracted from the right' do
+    rect = Rect.new(0, 0, 1200, 900)
+    mask = Rect.new(1100, 0, 100, 900)
+
+    new_rect = rect - mask
+
+    new_rect.must_equal Rect.new(0, 0, 1100, 900)
+  end
+
+  it 'can have a rectangle subtracted from the bottom' do
+    rect = Rect.new(0, 0, 1200, 900)
+    mask = Rect.new(0, 800, 1200, 100)
+
+    new_rect = rect - mask
+
+    new_rect.must_equal Rect.new(0, 0, 1200, 800)
+  end
 end

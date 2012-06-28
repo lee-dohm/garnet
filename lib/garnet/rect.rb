@@ -56,6 +56,26 @@ module Garnet
       @height == rect.height
     end
 
+    # Removes a portion of this rectangle defined by the given rectangle.
+    # 
+    # @param [Rect] rect Rectangle to remove.
+    # @return [Rect] New dimensions of the rectangle.
+    def -(rect)
+      if rect.min_x == 0 && rect.min_y == 0
+        if @height == rect.height
+          Rect.new(@min_x + rect.width, @min_y, @width - rect.width, @height)
+        else
+          Rect.new(@min_x, @min_y + rect.height, @width, @height - rect.height)
+        end
+      else
+        if @height == rect.height
+          Rect.new(@min_x, @min_y, @width - rect.width, @height)
+        else
+          Rect.new(@min_x, @min_y, @width, @height - rect.height)
+        end
+      end
+    end
+
     # Performs integer division if +num+ is a multiple of +den+, otherwise performs floating-point division.
     # 
     # @param num Numerator in the division.
