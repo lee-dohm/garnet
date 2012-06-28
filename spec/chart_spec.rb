@@ -53,7 +53,7 @@ describe Chart do
 
   it 'will accept data' do
     chart = Chart.new(DEFAULT_WIDTH, DEFAULT_HEIGHT) do |c|
-      c.set_data [1, 2, 3]
+      c.data = [1, 2, 3]
     end
 
     chart.data.must_equal [1, 2, 3]
@@ -74,7 +74,7 @@ describe Chart do
     instance_mock.expect(:nil?, false)
 
     Chart.new(DEFAULT_WIDTH, DEFAULT_HEIGHT) do |c|
-      c.set_type type_mock
+      c.type = type_mock
     end
   end
 
@@ -84,7 +84,7 @@ describe Chart do
 
     proc {
       Chart.new(DEFAULT_WIDTH, DEFAULT_HEIGHT) do |c|
-        c.set_type mock
+        c.type = mock
       end
     }.must_raise InvalidChartTypeError
   end
@@ -98,7 +98,7 @@ describe Chart do
     instance_mock.expect(:render, nil)
 
     chart = Chart.new(DEFAULT_WIDTH, DEFAULT_HEIGHT) do |c|
-      c.set_type type_mock
+      c.type = type_mock
     end
 
     chart.render

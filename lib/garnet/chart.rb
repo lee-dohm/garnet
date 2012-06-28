@@ -15,7 +15,7 @@ module Garnet
   # Accepts the data and generates the chart output.
   class Chart
     # Data to be displayed in the chart.
-    attr_reader :data
+    attr_accessor :data
 
     # Rectangle within the image to display the actual chart.
     attr_reader :display_rect
@@ -71,13 +71,8 @@ module Garnet
       builder.target!
     end
 
-    # Sets the data to use to render the chart.
-    def set_data(data)
-      @data = data
-    end
-
     # Sets the type of chart to render.
-    def set_type(type)
+    def type=(type)
       raise InvalidChartTypeError, "#{type.to_s} is not a valid chart type." unless type.public_instance_methods.include?(:render)
 
       @type = type
