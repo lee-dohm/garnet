@@ -57,15 +57,18 @@ module Garnet
 
         case f.placement
         when :left
-          rect.min_x += feature_rect.width
-          rect.width -= feature_rect.width
+          place_left(rect, feature_rect)
         when :right
-          rect.width -= feature_rect.width
+          place_right(rect, feature_rect)
         when :above
-          rect.min_y += feature_rect.height
-          rect.height -= feature_rect.height
+          place_above(rect, feature_rect)
         when :below
-          rect.height -= feature_rect.height
+          place_below(rect, feature_rect)
+        when :behind
+          place_above(rect, feature_rect[0])
+          place_right(rect, feature_rect[1])
+          place_below(rect, feature_rect[2])
+          place_left(rect, feature_rect[3])
         end
       end
 
@@ -101,6 +104,26 @@ module Garnet
       raise InvalidChartTypeError, "#{type.to_s} is not a valid chart type." unless type.public_instance_methods.include?(:render)
 
       @type = type
+    end
+
+    private
+
+    def place_above(rect, feature_rect)
+      rect.min_y += feature_rect.height
+      rect.height -= feature_rect.height
+    end
+
+    def place_below(rect, feature_rect)
+      rect.height -= feature_rect.height
+    end
+
+    def place_left(rect, feature_rect)
+      rect.min_x += feature_rect.width
+      rect.width -= feature_rect.width
+    end
+
+    def place_right(rect, feature_rect)
+      rect.width -= feature_rect.width
     end
   end
 end
