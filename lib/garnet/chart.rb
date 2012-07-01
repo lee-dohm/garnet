@@ -54,7 +54,7 @@ module Garnet
 
     # Adds a feature, such as axes or a legend, to the image.
     # 
-    # @param feature Feature class or object describing the feature to add.
+    # @param [Feature] feature Feature class or object describing the feature to add.
     # @param [:left, :right, :top, :bottom, :behind] placement Where to place the feature in the image.
     # @return [nil]
     def add_feature(feature, placement)
@@ -63,8 +63,8 @@ module Garnet
 
       case placement
       when :behind
-        feature.display_rect = Rect.new((@width - width).to_f / 2,
-                                        (@height - height).to_f / 2,
+        feature.display_rect = Rect.new(@display_rect.min_x + (@width - width).to_f / 2,
+                                        @display_rect.min_y + (@height - height).to_f / 2,
                                         width,
                                         height)
       when :left

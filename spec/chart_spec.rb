@@ -202,4 +202,33 @@ describe Chart do
     chart.display_rect.must_equal Rect.new(0, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT - FEATURE_HEIGHT)
     chart.features.count.must_equal 1
   end
+
+  it 'will handle the case where the display rect is not at the origin' do
+    left_mock = MiniTest::Mock.new
+    left_mock.expect(:width, FEATURE_WIDTH)
+    left_mock.expect(:height, FEATURE_HEIGHT)
+    left_mock.expect(:display_rect=, nil, [Rect])
+
+    top_mock = MiniTest::Mock.new
+    top_mock.expect(:width, FEATURE_WIDTH)
+    top_mock.expect(:height, FEATURE_HEIGHT)
+    top_mock.expect(:display_rect=, nil, [Rect])
+
+    mock = MiniTest::Mock.new
+    mock.expect(:width, FEATURE_WIDTH)
+    mock.expect(:height, FEATURE_HEIGHT)
+    mock.expect(:display_rect=, nil, [Rect.new(FEATURE_WIDTH, 
+                                              FEATURE_HEIGHT + (DEFAULT_HEIGHT - 2 * FEATURE_HEIGHT).to_f / 2, 
+                                              FEATURE_WIDTH, 
+                                              FEATURE_HEIGHT)])
+
+    chart = Chart.new(DEFAULT_WIDTH, DEFAULT_HEIGHT) do |c|
+      c.add_feature left_mock, :left
+      c.add_feature top_mock, :top
+      c.add_feature mock, :left
+    end
+
+    mock.verify
+    chart.features.count.must_equal 3
+  end
 end
