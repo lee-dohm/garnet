@@ -5,6 +5,7 @@
 # 
 
 require 'garnet/barchart'
+require 'garnet/border'
 require 'garnet/chart'
 require 'garnet/rect'
 require 'garnet/version'
