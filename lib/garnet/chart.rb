@@ -17,23 +17,27 @@ module Garnet
     # Data to be displayed in the chart.
     attr_accessor :data
 
+    # Rectangle within the image to display the actual chart.
+    attr_reader :display_rect
+
     # Features of the chart other than the chart itself.
     attr_reader :features
 
     # Height of the generated image.
-    attr_reader :height
+    attr_accessor :height
 
     # Type of the chart to render.
     attr_reader :type
 
     # Width of the generated image.
-    attr_reader :width
+    attr_accessor :width
 
     # Initialize a new instance of the +Chart+ class.
     # 
     # @param width Width of the image to generate.
     # @param height Height of the image to generate.
     # @raise [ArgumentError] When width or height are negative.
+    # @yieldparam chart [Chart] To allow for modifying settings.
     def initialize(width, height)
       raise ArgumentError, "Width cannot be negative" if width < 0
       raise ArgumentError, "Height cannot be negative" if height < 0
@@ -48,31 +52,50 @@ module Garnet
       yield self if block_given?
     end
 
-    # Rectangle within the image to display the actual chart.
-    def display_rect
-      rect = @display_rect
+    # Adds a feature, such as axes or a legend, to the image.
+    # 
+    # @param feature Feature class or object describing the feature to add.
+    # @param [:left, :right, :top, :bottom, :behind] placement Where to place the feature in the image.
+    # @return [nil]
+    def add_feature(feature, placement)
+      width = feature.width
+      height = feature.height
 
-      @features.each do |f|
-        feature_rect = f.rectangle
-
-        case f.placement
-        when :left
-          place_left(rect, feature_rect)
-        when :right
-          place_right(rect, feature_rect)
-        when :above
-          place_above(rect, feature_rect)
-        when :below
-          place_below(rect, feature_rect)
-        when :behind
-          place_above(rect, feature_rect[0])
-          place_right(rect, feature_rect[1])
-          place_below(rect, feature_rect[2])
-          place_left(rect, feature_rect[3])
-        end
+      case placement
+      when :behind
+        feature.display_rect = Rect.new((@width - width).to_f / 2,
+                                        (@height - height).to_f / 2,
+                                        width,
+                                        height)
+      when :left
+        feature.display_rect = Rect.new(@display_rect.min_x,
+                                        @display_rect.min_y + (@display_rect.height - height).to_f / 2,
+                                        width,
+                                        height)
+        @display_rect.min_x += width
+        @display_rect.width -= width
+      when :top
+        feature.display_rect = Rect.new(@display_rect.min_x + (@display_rect.width - width).to_f / 2,
+                                        @display_rect.min_y,
+                                        width,
+                                        height)
+        @display_rect.min_y += height
+        @display_rect.height -= height
+      when :right
+        feature.display_rect = Rect.new(@display_rect.min_x + @display_rect.width - width,
+                                        @display_rect.min_y + (@display_rect.height - height).to_f / 2,
+                                        width,
+                                        height)
+        @display_rect.width -= width
+      when :bottom
+        feature.display_rect = Rect.new(@display_rect.min_x + (@display_rect.width - width).to_f / 2,
+                                        @display_rect.min_y + @display_rect.height - height,
+                                        width,
+                                        height)
+        @display_rect.height -= height
       end
 
-      rect
+      @features << feature
     end
 
     # Renders the chart as an SVG image.
@@ -104,26 +127,6 @@ module Garnet
       raise InvalidChartTypeError, "#{type.to_s} is not a valid chart type." unless type.public_instance_methods.include?(:render)
 
       @type = type
-    end
-
-    private
-
-    def place_above(rect, feature_rect)
-      rect.min_y += feature_rect.height
-      rect.height -= feature_rect.height
-    end
-
-    def place_below(rect, feature_rect)
-      rect.height -= feature_rect.height
-    end
-
-    def place_left(rect, feature_rect)
-      rect.min_x += feature_rect.width
-      rect.width -= feature_rect.width
-    end
-
-    def place_right(rect, feature_rect)
-      rect.width -= feature_rect.width
     end
   end
 end

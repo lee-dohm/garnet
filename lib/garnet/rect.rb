@@ -27,24 +27,6 @@ module Garnet
       @height = height
     end
 
-    # Creates a mask on the given side and of the given size.
-    # 
-    # @param side One of :left, :right, :top or :bottom.
-    # @param size The thickness of the mask.
-    # @return [Rect] A rectangle describing the masked off area.
-    def create_mask(side, size)
-      case side
-      when :left
-        Rect.new(@min_x, @min_y, size, @height)
-      when :right
-        Rect.new(@width - size, @min_y, size, @height)
-      when :top
-        Rect.new(@min_x, @min_y, @width, size)
-      when :bottom
-        Rect.new(@min_x, @height - size, @width, size)
-      end
-    end
-
     # Generates SVG-compliant instructions on how to transform this object into +rect+.
     #
     # @param rect Rectangle to transform this object into.
@@ -72,26 +54,6 @@ module Garnet
       @min_y == rect.min_y &&
       @width == rect.width &&
       @height == rect.height
-    end
-
-    # Removes a portion of this rectangle defined by the given rectangle.
-    # 
-    # @param [Rect] rect Rectangle to remove.
-    # @return [Rect] New dimensions of the rectangle.
-    def -(rect)
-      if rect.min_x == 0 && rect.min_y == 0
-        if @height == rect.height
-          Rect.new(@min_x + rect.width, @min_y, @width - rect.width, @height)
-        else
-          Rect.new(@min_x, @min_y + rect.height, @width, @height - rect.height)
-        end
-      else
-        if @height == rect.height
-          Rect.new(@min_x, @min_y, @width - rect.width, @height)
-        else
-          Rect.new(@min_x, @min_y, @width, @height - rect.height)
-        end
-      end
     end
 
     # Performs integer division if +num+ is a multiple of +den+, otherwise performs floating-point division.

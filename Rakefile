@@ -22,7 +22,7 @@ task :static => [:syntax]
 desc "Perform syntax check"
 task :syntax do
   files = Dir['lib/**/*.rb']
-  files.each { |file| sh "ruby -c #{file}" }
+  files.each { |file| sh "ruby -cw #{file}" }
 end
 
 Rake::TestTask.new('spec') do |spec|
