@@ -4,6 +4,7 @@
 # Copyright:: Copyright (c) 2012 by Lifted Studios.  All Rights Reserved.
 # 
 
+require 'lifted'
 require 'rake/clean'
 require 'rake/testtask'
 require 'yard'
@@ -19,11 +20,7 @@ task :test => [:static, :spec]
 desc "Perform static analysis"
 task :static => [:syntax]
 
-desc "Perform syntax check"
-task :syntax do
-  files = Dir['lib/**/*.rb']
-  files.each { |file| sh "ruby -cw #{file}" }
-end
+Lifted::Rake::SyntaxTask.new
 
 Rake::TestTask.new('spec') do |spec|
   spec.libs << 'spec'
