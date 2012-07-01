@@ -30,6 +30,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'builder', '~> 3.0'
 
   s.add_development_dependency 'bundler', '~> 1.0'
+  s.add_development_dependency 'lifted', '~> 0.0'
   s.add_development_dependency 'minitest', '~> 3.0'
   s.add_development_dependency 'nokogiri', '~> 1.5'
   s.add_development_dependency 'rake', '~> 0.9'

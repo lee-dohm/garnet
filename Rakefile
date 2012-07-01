@@ -4,13 +4,14 @@
 # Copyright:: Copyright (c) 2012 by Lifted Studios.  All Rights Reserved.
 # 
 
+require 'bundler/gem_tasks'
 require 'lifted'
 require 'rake/clean'
 require 'rake/testtask'
 require 'yard'
 
 CLEAN.include('.yardoc')
-CLOBBER.include('doc')
+CLOBBER.include('doc', 'pkg')
 
 task :default => [:test, :yard]
 
@@ -20,12 +21,11 @@ task :test => [:static, :spec]
 desc "Perform static analysis"
 task :static => [:syntax]
 
-Lifted::Rake::SyntaxTask.new
-
 Rake::TestTask.new('spec') do |spec|
   spec.libs << 'spec'
   spec.test_files = Dir['spec/**/*_spec.rb']
   spec.warning = true
 end
 
+Lifted::Rake::SyntaxTask.new
 YARD::Rake::YardocTask.new
