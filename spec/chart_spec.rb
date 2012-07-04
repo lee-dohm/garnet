@@ -71,22 +71,18 @@ describe Chart do
     chart.display_rect.must_equal Rect.new(0, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT)
   end
 
-  it 'can have a chart type assigned to it' do
-    type_mock = MiniTest::Mock.new
-    instance_mock = MiniTest::Mock.new
-    type_mock.expect(:new, instance_mock, [Builder::XmlMarkup, Chart])
-    type_mock.expect(:public_instance_methods, [:render])
-    instance_mock.expect(:render, nil)
-    instance_mock.expect(:nil?, false)
+  it 'can have a chart instance assigned to it' do
+    mock = MiniTest::Mock.new
+    mock.expect(:render, nil)
+    mock.expect(:nil?, false)
 
     Chart.new(DEFAULT_WIDTH, DEFAULT_HEIGHT) do |c|
-      c.type = type_mock
+      c.type = mock
     end
   end
 
   it 'will raise an error if the type that is set does not respond to #render' do
     mock = MiniTest::Mock.new
-    mock.expect(:public_instance_methods, [])
 
     proc {
       Chart.new(DEFAULT_WIDTH, DEFAULT_HEIGHT) do |c|
@@ -96,139 +92,123 @@ describe Chart do
   end
 
   it 'will call the chart type render method when render is called' do
-    type_mock = MiniTest::Mock.new
-    instance_mock = MiniTest::Mock.new
-    type_mock.expect(:new, instance_mock, [Builder::XmlMarkup, Chart])
-    type_mock.expect(:public_instance_methods, [:render])
-    type_mock.expect(:nil?, false)
-    instance_mock.expect(:render, nil)
+    mock = MiniTest::Mock.new
+    mock.expect(:render, nil, [Builder::XmlMarkup, Chart])
+    mock.expect(:nil?, false)
 
     chart = Chart.new(DEFAULT_WIDTH, DEFAULT_HEIGHT) do |c|
-      c.type = type_mock
+      c.type = mock
     end
 
     chart.render
 
-    type_mock.verify
-    instance_mock.verify
+    mock.verify
   end
 
-  it 'will allow features to be added as an instance' do
-    mock = MiniTest::Mock.new
-    mock.expect(:width, FEATURE_WIDTH)
-    mock.expect(:height, FEATURE_HEIGHT)
-
-    expected_min_x = (DEFAULT_WIDTH - FEATURE_WIDTH).to_f / 2
-    expected_min_y = (DEFAULT_HEIGHT - FEATURE_HEIGHT).to_f / 2
-    mock.expect(:display_rect=, nil, [Rect.new(expected_min_x, expected_min_y, FEATURE_WIDTH, FEATURE_HEIGHT)])
-
-    chart = Chart.new(DEFAULT_WIDTH, DEFAULT_HEIGHT) do |c|
-      c.add_feature mock, :behind
+  describe 'features' do
+    before do
+      @mock = MiniTest::Mock.new
+      @mock.expect(:width, FEATURE_WIDTH)
+      @mock.expect(:height, FEATURE_HEIGHT)
     end
 
-    mock.verify
-    chart.display_rect.must_equal Rect.new(0, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT)
-    chart.features.count.must_equal 1
-  end
+    it 'will allow features to be added' do
+      expected_min_x = (DEFAULT_WIDTH - FEATURE_WIDTH).to_f / 2
+      expected_min_y = (DEFAULT_HEIGHT - FEATURE_HEIGHT).to_f / 2
+      @mock.expect(:display_rect=, nil, [Rect.new(expected_min_x, expected_min_y, FEATURE_WIDTH, FEATURE_HEIGHT)])
 
-  it 'will allow features to be placed to the left of the chart' do
-    mock = MiniTest::Mock.new
-    mock.expect(:width, FEATURE_WIDTH)
-    mock.expect(:height, FEATURE_HEIGHT)
+      chart = Chart.new(DEFAULT_WIDTH, DEFAULT_HEIGHT) do |c|
+        c.add_feature @mock, :behind
+      end
 
-    expected_min_x = 0
-    expected_min_y = (DEFAULT_HEIGHT - FEATURE_HEIGHT).to_f / 2
-    mock.expect(:display_rect=, nil, [Rect.new(expected_min_x, expected_min_y, FEATURE_WIDTH, FEATURE_HEIGHT)])
-
-    chart = Chart.new(DEFAULT_WIDTH, DEFAULT_HEIGHT) do |c|
-      c.add_feature mock, :left
+      @mock.verify
+      chart.display_rect.must_equal Rect.new(0, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT)
+      chart.features.count.must_equal 1
     end
 
-    mock.verify
-    chart.display_rect.must_equal Rect.new(FEATURE_WIDTH, 0, DEFAULT_WIDTH - FEATURE_WIDTH, DEFAULT_HEIGHT)
-    chart.features.count.must_equal 1
-  end
+    it 'will allow features to be placed to the left of the chart' do
+      expected_min_x = 0
+      expected_min_y = (DEFAULT_HEIGHT - FEATURE_HEIGHT).to_f / 2
+      @mock.expect(:display_rect=, nil, [Rect.new(expected_min_x, expected_min_y, FEATURE_WIDTH, FEATURE_HEIGHT)])
 
-  it 'will allow features to be placed above the chart' do
-    mock = MiniTest::Mock.new
-    mock.expect(:width, FEATURE_WIDTH)
-    mock.expect(:height, FEATURE_HEIGHT)
+      chart = Chart.new(DEFAULT_WIDTH, DEFAULT_HEIGHT) do |c|
+        c.add_feature @mock, :left
+      end
 
-    expected_min_x = (DEFAULT_WIDTH - FEATURE_WIDTH).to_f / 2
-    expected_min_y = 0
-    mock.expect(:display_rect=, nil, [Rect.new(expected_min_x, expected_min_y, FEATURE_WIDTH, FEATURE_HEIGHT)])
-
-    chart = Chart.new(DEFAULT_WIDTH, DEFAULT_HEIGHT) do |c|
-      c.add_feature mock, :top
+      @mock.verify
+      chart.display_rect.must_equal Rect.new(FEATURE_WIDTH, 0, DEFAULT_WIDTH - FEATURE_WIDTH, DEFAULT_HEIGHT)
+      chart.features.count.must_equal 1
     end
 
-    mock.verify
-    chart.display_rect.must_equal Rect.new(0, FEATURE_HEIGHT, DEFAULT_WIDTH, DEFAULT_HEIGHT - FEATURE_HEIGHT)
-    chart.features.count.must_equal 1
-  end
+    it 'will allow features to be placed above the chart' do
+      expected_min_x = (DEFAULT_WIDTH - FEATURE_WIDTH).to_f / 2
+      expected_min_y = 0
+      @mock.expect(:display_rect=, nil, [Rect.new(expected_min_x, expected_min_y, FEATURE_WIDTH, FEATURE_HEIGHT)])
 
-  it 'will allow features to be placed to the right of the chart' do
-    mock = MiniTest::Mock.new
-    mock.expect(:width, FEATURE_WIDTH)
-    mock.expect(:height, FEATURE_HEIGHT)
+      chart = Chart.new(DEFAULT_WIDTH, DEFAULT_HEIGHT) do |c|
+        c.add_feature @mock, :top
+      end
 
-    expected_min_x = DEFAULT_WIDTH - FEATURE_WIDTH
-    expected_min_y = (DEFAULT_HEIGHT - FEATURE_HEIGHT).to_f / 2
-    mock.expect(:display_rect=, nil, [Rect.new(expected_min_x, expected_min_y, FEATURE_WIDTH, FEATURE_HEIGHT)])
-
-    chart = Chart.new(DEFAULT_WIDTH, DEFAULT_HEIGHT) do |c|
-      c.add_feature mock, :right
+      @mock.verify
+      chart.display_rect.must_equal Rect.new(0, FEATURE_HEIGHT, DEFAULT_WIDTH, DEFAULT_HEIGHT - FEATURE_HEIGHT)
+      chart.features.count.must_equal 1
     end
 
-    mock.verify
-    chart.display_rect.must_equal Rect.new(0, 0, DEFAULT_WIDTH - FEATURE_WIDTH, DEFAULT_HEIGHT)
-    chart.features.count.must_equal 1
-  end
+    it 'will allow features to be placed to the right of the chart' do
+      expected_min_x = DEFAULT_WIDTH - FEATURE_WIDTH
+      expected_min_y = (DEFAULT_HEIGHT - FEATURE_HEIGHT).to_f / 2
+      @mock.expect(:display_rect=, nil, [Rect.new(expected_min_x, expected_min_y, FEATURE_WIDTH, FEATURE_HEIGHT)])
 
-  it 'will allow features to be placed below the chart' do
-    mock = MiniTest::Mock.new
-    mock.expect(:width, FEATURE_WIDTH)
-    mock.expect(:height, FEATURE_HEIGHT)
+      chart = Chart.new(DEFAULT_WIDTH, DEFAULT_HEIGHT) do |c|
+        c.add_feature @mock, :right
+      end
 
-    expected_min_x = (DEFAULT_WIDTH - FEATURE_WIDTH).to_f / 2
-    expected_min_y = DEFAULT_HEIGHT - FEATURE_HEIGHT
-    mock.expect(:display_rect=, nil, [Rect.new(expected_min_x, expected_min_y, FEATURE_WIDTH, FEATURE_HEIGHT)])
-
-    chart = Chart.new(DEFAULT_WIDTH, DEFAULT_HEIGHT) do |c|
-      c.add_feature mock, :bottom
+      @mock.verify
+      chart.display_rect.must_equal Rect.new(0, 0, DEFAULT_WIDTH - FEATURE_WIDTH, DEFAULT_HEIGHT)
+      chart.features.count.must_equal 1
     end
 
-    mock.verify
-    chart.display_rect.must_equal Rect.new(0, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT - FEATURE_HEIGHT)
-    chart.features.count.must_equal 1
-  end
+    it 'will allow features to be placed below the chart' do
+      expected_min_x = (DEFAULT_WIDTH - FEATURE_WIDTH).to_f / 2
+      expected_min_y = DEFAULT_HEIGHT - FEATURE_HEIGHT
+      @mock.expect(:display_rect=, nil, [Rect.new(expected_min_x, expected_min_y, FEATURE_WIDTH, FEATURE_HEIGHT)])
 
-  it 'will handle the case where the display rect is not at the origin' do
-    left_mock = MiniTest::Mock.new
-    left_mock.expect(:width, FEATURE_WIDTH)
-    left_mock.expect(:height, FEATURE_HEIGHT)
-    left_mock.expect(:display_rect=, nil, [Rect])
+      chart = Chart.new(DEFAULT_WIDTH, DEFAULT_HEIGHT) do |c|
+        c.add_feature @mock, :bottom
+      end
 
-    top_mock = MiniTest::Mock.new
-    top_mock.expect(:width, FEATURE_WIDTH)
-    top_mock.expect(:height, FEATURE_HEIGHT)
-    top_mock.expect(:display_rect=, nil, [Rect])
-
-    mock = MiniTest::Mock.new
-    mock.expect(:width, FEATURE_WIDTH)
-    mock.expect(:height, FEATURE_HEIGHT)
-    mock.expect(:display_rect=, nil, [Rect.new(FEATURE_WIDTH, 
-                                              FEATURE_HEIGHT + (DEFAULT_HEIGHT - 2 * FEATURE_HEIGHT).to_f / 2, 
-                                              FEATURE_WIDTH, 
-                                              FEATURE_HEIGHT)])
-
-    chart = Chart.new(DEFAULT_WIDTH, DEFAULT_HEIGHT) do |c|
-      c.add_feature left_mock, :left
-      c.add_feature top_mock, :top
-      c.add_feature mock, :left
+      @mock.verify
+      chart.display_rect.must_equal Rect.new(0, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT - FEATURE_HEIGHT)
+      chart.features.count.must_equal 1
     end
 
-    mock.verify
-    chart.features.count.must_equal 3
+    it 'will handle the case where the display rect is not at the origin' do
+      left_mock = MiniTest::Mock.new
+      left_mock.expect(:width, FEATURE_WIDTH)
+      left_mock.expect(:height, FEATURE_HEIGHT)
+      left_mock.expect(:display_rect=, nil, [Rect])
+
+      top_mock = MiniTest::Mock.new
+      top_mock.expect(:width, FEATURE_WIDTH)
+      top_mock.expect(:height, FEATURE_HEIGHT)
+      top_mock.expect(:display_rect=, nil, [Rect])
+
+      mock = MiniTest::Mock.new
+      mock.expect(:width, FEATURE_WIDTH)
+      mock.expect(:height, FEATURE_HEIGHT)
+      mock.expect(:display_rect=, nil, [Rect.new(FEATURE_WIDTH, 
+                                                FEATURE_HEIGHT + (DEFAULT_HEIGHT - 2 * FEATURE_HEIGHT).to_f / 2, 
+                                                FEATURE_WIDTH, 
+                                                FEATURE_HEIGHT)])
+
+      chart = Chart.new(DEFAULT_WIDTH, DEFAULT_HEIGHT) do |c|
+        c.add_feature left_mock, :left
+        c.add_feature top_mock, :top
+        c.add_feature mock, :left
+      end
+
+      mock.verify
+      chart.features.count.must_equal 3
+    end
   end
 end
