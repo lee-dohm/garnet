@@ -112,9 +112,13 @@ describe Chart do
       @mock.expect(:height, FEATURE_HEIGHT)
     end
 
+    def center(field, size)
+      (field - size).to_f / 2
+    end
+
     it 'will allow features to be added' do
-      expected_min_x = (DEFAULT_WIDTH - FEATURE_WIDTH).to_f / 2
-      expected_min_y = (DEFAULT_HEIGHT - FEATURE_HEIGHT).to_f / 2
+      expected_min_x = center(DEFAULT_WIDTH, FEATURE_WIDTH)
+      expected_min_y = center(DEFAULT_HEIGHT, FEATURE_HEIGHT)
       @mock.expect(:display_rect=, nil, [Rect.new(expected_min_x, expected_min_y, FEATURE_WIDTH, FEATURE_HEIGHT)])
 
       chart = Chart.new(DEFAULT_WIDTH, DEFAULT_HEIGHT) do |c|
@@ -128,7 +132,7 @@ describe Chart do
 
     it 'will allow features to be placed to the left of the chart' do
       expected_min_x = 0
-      expected_min_y = (DEFAULT_HEIGHT - FEATURE_HEIGHT).to_f / 2
+      expected_min_y = center(DEFAULT_HEIGHT, FEATURE_HEIGHT)
       @mock.expect(:display_rect=, nil, [Rect.new(expected_min_x, expected_min_y, FEATURE_WIDTH, FEATURE_HEIGHT)])
 
       chart = Chart.new(DEFAULT_WIDTH, DEFAULT_HEIGHT) do |c|
@@ -141,7 +145,7 @@ describe Chart do
     end
 
     it 'will allow features to be placed above the chart' do
-      expected_min_x = (DEFAULT_WIDTH - FEATURE_WIDTH).to_f / 2
+      expected_min_x = center(DEFAULT_WIDTH, FEATURE_WIDTH)
       expected_min_y = 0
       @mock.expect(:display_rect=, nil, [Rect.new(expected_min_x, expected_min_y, FEATURE_WIDTH, FEATURE_HEIGHT)])
 
@@ -156,7 +160,7 @@ describe Chart do
 
     it 'will allow features to be placed to the right of the chart' do
       expected_min_x = DEFAULT_WIDTH - FEATURE_WIDTH
-      expected_min_y = (DEFAULT_HEIGHT - FEATURE_HEIGHT).to_f / 2
+      expected_min_y = center(DEFAULT_HEIGHT, FEATURE_HEIGHT)
       @mock.expect(:display_rect=, nil, [Rect.new(expected_min_x, expected_min_y, FEATURE_WIDTH, FEATURE_HEIGHT)])
 
       chart = Chart.new(DEFAULT_WIDTH, DEFAULT_HEIGHT) do |c|
@@ -169,7 +173,7 @@ describe Chart do
     end
 
     it 'will allow features to be placed below the chart' do
-      expected_min_x = (DEFAULT_WIDTH - FEATURE_WIDTH).to_f / 2
+      expected_min_x = center(DEFAULT_WIDTH, FEATURE_WIDTH)
       expected_min_y = DEFAULT_HEIGHT - FEATURE_HEIGHT
       @mock.expect(:display_rect=, nil, [Rect.new(expected_min_x, expected_min_y, FEATURE_WIDTH, FEATURE_HEIGHT)])
 
