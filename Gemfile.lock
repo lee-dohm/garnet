@@ -8,6 +8,7 @@ GEM
   remote: http://rubygems.org/
   specs:
     builder (3.0.0)
+    lifted (0.0.1)
     minitest (3.2.0)
     nokogiri (1.5.5)
     rake (0.9.2.2)
@@ -19,6 +20,7 @@ PLATFORMS
 DEPENDENCIES
   bundler (~> 1.0)
   garnet!
+  lifted (~> 0.0)
   minitest (~> 3.0)
   nokogiri (~> 1.5)
   rake (~> 0.9)
