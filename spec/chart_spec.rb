@@ -214,5 +214,20 @@ describe Chart do
       mock.verify
       chart.features.count.must_equal 3
     end
+
+    it 'will tell the feature to draw itself when render is called' do
+      expected_min_x = 0
+      expected_min_y = center(DEFAULT_HEIGHT, FEATURE_HEIGHT)
+      @mock.expect(:display_rect=, nil, [Rect.new(expected_min_x, expected_min_y, FEATURE_WIDTH, FEATURE_HEIGHT)])
+      @mock.expect(:render, nil, [Builder::XmlMarkup, Chart])
+
+      chart = Chart.new(DEFAULT_WIDTH, DEFAULT_HEIGHT) do |c|
+        c.add_feature @mock, :left
+      end
+
+      chart.render
+
+      @mock.verify
+    end
   end
 end

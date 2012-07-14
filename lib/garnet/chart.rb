@@ -114,7 +114,7 @@ module Garnet
       options[:height] = @height
       builder.svg(options) do |b|
         unless @type.nil?
-          type.render(b, self)
+          @type.render(b, self)
         end
       end
 
