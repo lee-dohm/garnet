@@ -30,6 +30,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'builder', '~> 3.0'
 
   s.add_development_dependency 'bundler', '~> 1.0'
+  s.add_development_dependency 'debugger'
   s.add_development_dependency 'lifted', '~> 0.0'
   s.add_development_dependency 'minitest', '~> 3.0'
   s.add_development_dependency 'nokogiri', '~> 1.5'
@@ -37,5 +38,5 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'yard', '~> 0.8'
 
   s.files = `git ls-files`.split("\n")
-  s.test_files = `git ls-files`.split("\n").select { |f| f =~ /^spec/ }
+  s.test_files = s.files.select { |f| f =~ /^spec/ }
 end
