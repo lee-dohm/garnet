@@ -116,12 +116,18 @@ module Garnet
         unless @type.nil?
           @type.render(b, self)
         end
+
+        @features.each do |feature|
+          feature.render(b, self)
+        end
       end
 
       builder.target!
     end
 
     # Sets the type of chart to render.
+    # 
+    # @param [#render] type The type of chart to draw.
     def type=(type)
       raise InvalidChartTypeError, "#{type.to_s} is not a valid chart type." unless type.respond_to?(:render)
 

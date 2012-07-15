@@ -12,7 +12,7 @@ end
 
 chart = Chart.new(400, 300) do |c|
   c.set_data data
-  c.set_type BarChart
+  c.set_type BarChart.new
 end
 
 puts chart.render

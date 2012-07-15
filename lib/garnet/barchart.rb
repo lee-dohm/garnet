@@ -27,24 +27,22 @@ module Garnet
     # 114 114 114
 
     # Initializes a new instance of the +BarChart+ class.
-    # 
-    # @param [Builder::XmlMarkup] builder Builder object to use to emit XML.
-    # @param [Chart] chart Object describing the chart.
-    def initialize(builder, chart)
-      @builder = builder
-      @chart = chart
+    def initialize
       @colors = "rgb(89, 154, 211)"
       @bar_width = 4
       @between_bar_margin = 1
     end
 
     # Renders the chart from the data.
-    def render
-      data = @chart.data
+    # 
+    # @param [Builder::XmlMarkup] builder Builder object to use to generate the XML.
+    # @param [Chart] chart Object describing the chart.
+    def render(builder, chart)
+      data = chart.data
       max = data.max
-      chart_rect = Rect.new(0, 0, chart_width, max)
+      chart_rect = Rect.new(0, 0, chart_width(chart), max)
 
-      @builder.g(:transform => chart_rect.transform(@chart.display_rect)) do |b|
+      builder.g(:transform => chart_rect.transform(chart.display_rect)) do |b|
         data.each_with_index do |datum, index|
           case @colors
           when Array
@@ -64,9 +62,10 @@ module Garnet
 
     # Calculates the width of the chart before any transformations.
     # 
+    # @param [Chart] chart Chart for which to calculate the width.
     # @return [Numeric] Width of the chart.
-    def chart_width
-      (@chart.data.count * @bar_width) + ((@chart.data.count - 1) * @between_bar_margin)
+    def chart_width(chart)
+      (chart.data.count * @bar_width) + ((chart.data.count - 1) * @between_bar_margin)
     end
     private :chart_width
   end
